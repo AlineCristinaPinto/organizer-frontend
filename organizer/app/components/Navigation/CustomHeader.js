@@ -1,24 +1,33 @@
 import React, { Component } from "react";
-import { View, StyleSheet} from "react-native";
-import { Header, Left, Icon } from 'native-base'
+import { StyleSheet,  Platform, StatusBar} from "react-native";
+import { Header, Left, Icon, Container, Right, Button } from 'native-base'
 
 class CustomHeader extends Component {
     render() {
         return (
-            <View>
-                <Header>
-                    <Left>
-                        <Icon name="menu" onPress={() => this.props.drawerOpen()}/>
-                    </Left>
-                </Header>
-            </View>
+            <Header style={styles.headerMenu}>
+                <Left>
+                    <Button
+                    transparent
+                    onPress={() => this.props.drawerOpen()}>
+                    <Icon name="menu" />
+                    </Button>
+                </Left>
+                <Right>
+                    <Button
+                    transparent>
+                    <Icon name="search" />
+                    </Button>
+                </Right>
+            </Header>
         );
     }
 }
 export default CustomHeader;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,        
+    headerMenu:{
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        height: 70,
     },
 })

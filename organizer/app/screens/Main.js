@@ -1,16 +1,16 @@
 import React from 'react';
-import { StyleSheet, Image, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, SafeAreaView, ScrollView, Platform, StatusBar } from 'react-native';
 import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import MaxScreen from './MaxScreen';
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <AppContainer />
-    );
-  }
+    render() {
+        return (
+        <AppContainer />
+        );
+    }
 }
 
 const CustomDrawerComponent = (props) => (

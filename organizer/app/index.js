@@ -2,6 +2,7 @@ import React from "react";
 import EStyleSheet from "react-native-extended-stylesheet";
 //import Register from "./screens/Register";
 import Main from "./screens/Main";
+//import CreateItemScreen from "./screens/CreateItemScreen";
 
  /*EStyleSheet.build({
     $backgroundButton: "#",
