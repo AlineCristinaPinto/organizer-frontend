@@ -15,8 +15,8 @@ export default class App extends React.Component {
 }
 
 const CustomDrawerComponent = (props) => (
-    <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ height:150, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+        <View style={{ marginTop: 15, height:150, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center' }}>
             <Image source={require('../assets/images/user.png')} style={{ height: 120, width: 120, borderRadius: 60 }} />
         </View>
         <ScrollView>
@@ -32,7 +32,8 @@ const AppDrawerNavigator = createDrawerNavigator({
 }, {
     contentComponent: CustomDrawerComponent,
     contentOptions: {
-        activeTintColor: '#78E7F3'
+        activeTintColor: '#78E7F3',
+        inactiveTintColor: 'white',
     }
 })
 

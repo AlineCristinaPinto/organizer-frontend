@@ -42,7 +42,7 @@ export default class HomeScreen extends React.Component {
     } else 
     if (data.tipo == 'LEM') {
       return  <ListItem style={ styles.LEM }>
-                <Text style={ styles.textColor }>{data.nome}</Text>
+                <Text style={ styles.textColor }> {data.nome}</Text>
               </ListItem>;
     } else {
       return  <ListItem style={ styles.TAR }>
@@ -57,7 +57,7 @@ export default class HomeScreen extends React.Component {
     return (
       <Container style={styles.page}>
         
-        <CustumHeader/>
+        <CustumHeader onPress={() =>this.props.navigation.openDrawer()}/>
 
         <Content>
 
