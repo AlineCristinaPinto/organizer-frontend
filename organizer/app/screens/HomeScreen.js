@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ListView } from 'react-native';
-import { Container, Content, List, ListItem, Button } from 'native-base';
+import { Container, Content, List, ListItem, Button, CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
 import CustomFab from '../components/Navigation/CustumFab';
@@ -26,7 +26,7 @@ export default class HomeScreen extends React.Component {
       listViewData: datas,
     };
   }
-
+  
   deleteRow(secId, rowId, rowMap) {
     rowMap[`${secId}${rowId}`].props.closeRow();
     const newData = [...this.state.listViewData];
@@ -46,6 +46,7 @@ export default class HomeScreen extends React.Component {
               </ListItem>;
     } else {
       return  <ListItem style={ styles.TAR }>
+                <CheckBox style={ styles.checkBoxFeatures } checked={false} />
                 <Text style={ styles.textColor }>{data.nome}</Text>
               </ListItem>;
     }
@@ -60,9 +61,7 @@ export default class HomeScreen extends React.Component {
 
         <Content>
 
-          <ListItem itemDivider>
-            <Text></Text>
-          </ListItem> 
+          <Text></Text>
 
           <List
             leftOpenValue={75}
@@ -105,21 +104,34 @@ const styles = StyleSheet.create({
   },
 
   textColor: {
-    color: "#fff",
+    color: "black",
+    marginLeft: 8,    
+    fontFamily: 'monospace',
   },
 
-  // ESCOLHER CORES MELHORES PRO BACKGROUD COLOR
+  checkBoxFeatures: {
+    marginLeft: 4,
+    borderColor: '#b23601',
+    //backgroundColor: '#fff',
+    //color: '#b23601'
+  },
 
   LEM: { 
-    backgroundColor: '#4c7e5e',
+    borderRightWidth: 4,
+    borderColor: '#4c7e5e',
+    borderStyle: 'solid',
   },
 
   SIM: { 
-    backgroundColor: '#012a7c',
+    borderRightWidth: 4,
+    borderColor: '#012a7c',
+    borderStyle: 'solid',
   },
 
   TAR: { 
-    backgroundColor: '#b23601',
+    borderRightWidth: 4,
+    borderColor: '#b23601',
+    borderStyle: 'solid',
   },
 
 });

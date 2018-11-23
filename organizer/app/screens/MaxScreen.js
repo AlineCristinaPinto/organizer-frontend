@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { CustomHeader } from "../components/Navigation/CustomHeader";
+import { StyleSheet, Image, Text, Title } from 'react-native';
+import  CustumHeader from "../components/Navigation/CustomHeader";
+import { Container, Content, Button, Body, View } from 'native-base';
 
 export default class MaxScreen extends React.Component {
   
@@ -16,24 +16,79 @@ export default class MaxScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-    
-        <Text>A interface do Max ficará nesta página</Text>
-      </View>
+      <Container style={ styles.page }>
+        
+        <CustumHeader/>
+
+        <Content>
+          <Text></Text>
+          <View style={ styles.container }>
+            <Text style={ styles.maxTitle }>MAX</Text>
+            <Text style={ styles.description }>Módulo Assistente X</Text>
+            <Image style={ styles.imgMax } source={require('../assets/images/crystal.png')} />
+          </View>
+          <Body style={ styles.buttons }>
+            <Button rounded bordered info>
+              <Text style={ styles.textButtonI }>Interagir</Text>
+            </Button>
+          </Body>
+            <Text></Text>
+          <Body style={ styles.buttons }>
+            <Button rounded info>
+              <Text style={ styles.textButtonII }>Manual de Interações</Text>
+            </Button>
+            </Body>
+        </Content>
+
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  page:{
+    backgroundColor: 'black',
+  },
+
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  description: {
+    color: "#5bc0de",
+  },
+
+  imgMax: {
+    flex: 1,
+    width: 350,
+    height: 350,
+    resizeMode: 'contain'
   },
 
   icon: {
     width: 24,
     height: 24,
+  },
+
+  maxTitle: {
+    fontFamily: 'monospace',
+    fontSize: 40,
+    alignItems: 'center',
+    color: '#fff',
+  },
+
+  textButtonI: {
+    padding: 10,
+    color: "#5bc0de",
+  },
+
+  textButtonII: {
+    padding: 10,
+  },
+
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center"
   },
 });
