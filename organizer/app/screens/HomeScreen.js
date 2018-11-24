@@ -28,6 +28,7 @@ export default class HomeScreen extends React.Component {
     this.state = {
       basic: true,
       listViewData: datas,
+	  textSearch: "",
     };
   }
   
@@ -55,13 +56,30 @@ export default class HomeScreen extends React.Component {
               </ListItem>;
     }
   }
+  
+	//changes the search text
+	//this method is called inside the CustomHeader component
+	changeTextSearch = (strValue) => {
+		this.setState({
+			textSearch: strValue
+		});
+	}
+	
+	displayItem(data){
+		//filter items by name
+		if(data.nome.toLowerCase().indexOf(this.state.textSearch.toLowerCase()) > -1){
+			return this.changeCSS(data);
+		}else{
+			return null;
+		}
+	}
 
   render() {
   
     return (
       <Container style={styles.page}>
         
-        <CustumHeader onPress={() =>this.props.navigation.openDrawer()}/>
+        <CustumHeader onPress={() =>this.props.navigation.openDrawer()} changeTextSearch = {this.changeTextSearch} />
 
         <Content>
 
@@ -73,9 +91,9 @@ export default class HomeScreen extends React.Component {
             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
             
             renderRow={data =>
-              <View>
-                {this.changeCSS(data)}
-              </View>             
+				<View>
+					{this.displayItem(data)}
+				</View>             
             }
 
             renderLeftHiddenRow={data =>
