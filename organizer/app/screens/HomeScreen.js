@@ -17,9 +17,13 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const datas = [
-      { nome: 'Simples', tipo: 'SIM'},
-      { nome: 'Tarefa', tipo: 'TAR'},
-      { nome: 'Lembrete', tipo: 'LEM'}
+      { nome: 'Sorvete aumentou 1 golpinho', tipo: 'SIM'},
+      { nome: 'Fazer lista de química', tipo: 'TAR'},
+      { nome: 'Finalizar teste do projeto', tipo: 'TAR'},
+      { nome: 'Entregar livros no Campus I', tipo: 'LEM'},
+      { nome: 'Agendar visita técnica', tipo: 'LEM'},
+      { nome: 'Limpar meu quarto', tipo: 'TAR'},
+      { nome: 'Sair com os amigos', tipo: 'LEM'}      
     ];
     this.state = {
       basic: true,
@@ -84,10 +88,8 @@ export default class HomeScreen extends React.Component {
                 <Icon active name="trash" />
               </Button>}
           />
-        </Content>
-
+          </Content>
         <CustomFab/>
-
       </Container>
     );
   }
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
   textColor: {
     color: "black",
     marginLeft: 8,    
-    fontFamily: 'monospace',
+    fontFamily: 'patrickH',
+    fontSize: 17,
   },
 
   checkBoxFeatures: {

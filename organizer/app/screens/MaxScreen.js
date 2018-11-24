@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
 
   description: {
     color: "#5bc0de",
+    fontFamily: 'patrickH',
+    fontSize: 17,
   },
 
   imgMax: {
@@ -72,8 +74,8 @@ const styles = StyleSheet.create({
   },
 
   maxTitle: {
-    fontFamily: 'monospace',
-    fontSize: 40,
+    fontFamily: 'gloria',
+    fontSize: 35,
     alignItems: 'center',
     color: '#fff',
   },
@@ -81,10 +83,12 @@ const styles = StyleSheet.create({
   textButtonI: {
     padding: 10,
     color: "#5bc0de",
+    fontFamily: 'gloria',
   },
 
   textButtonII: {
     padding: 10,
+    fontFamily: 'gloria',
   },
 
   buttons: {

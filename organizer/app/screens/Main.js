@@ -4,13 +4,39 @@ import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-na
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import MaxScreen from './MaxScreen';
+import { AppLoading, Font } from 'expo';
 
 export default class App extends React.Component {
-    
+
+    state = {
+        isReady: false,
+    }
+  
+    componentWillMount() {
+
+    (async () => {
+
+        await Font.loadAsync({
+
+            'patrickH': require('../assets/fonts/Patrick_Hand/PatrickHand-Regular.ttf'),
+            'gloria' : require('../assets/fonts/Gloria_Hallelujah/GloriaHallelujah.ttf')
+        });
+
+        this.setState({
+            isReady: true
+        });
+
+    })();
+
+    }
+
     render() {
-        return (
-        <AppContainer />
-        );
+
+        if (!this.state.isReady) {
+            return <AppLoading /> ;
+        } else {
+            return (<AppContainer />);
+        }
     }
 }
 
