@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ListView } from 'react-native';
+import { Alert, Text, View, ListView } from 'react-native';
 import { Container, Content, List, ListItem, Button, CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
@@ -30,8 +30,19 @@ export default class HomeScreen extends React.Component {
     this.state = {
       basic: true,
       listViewData: datas,
-	  textSearch: "",
+      modalVisible: false,
+	    textSearch: "",
     };
+  }
+
+  setAlert(data){
+    Alert.alert(
+      data.nome,
+      "Descrição: " + data.tipo + "\nTipo: " + data.tipo 
+      + "\nData: " + data.tipo + "\nTags: " + data.tipo,
+      [],
+      { cancelable: true }
+    )
   }
   
   deleteRow(secId, rowId, rowMap) {
@@ -43,16 +54,16 @@ export default class HomeScreen extends React.Component {
 
   changeCSS(data) {
     if (data.tipo == 'SIM') {
-      return  <ListItem style={ styles.SIM }>
+      return  <ListItem style={ styles.SIM } onPress={() => this.setAlert(data) }>
                 <Text style={ styles.textColor }> {data.nome} </Text>
-              </ListItem>;
+              </ListItem>
     } else 
     if (data.tipo == 'LEM') {
-      return  <ListItem style={ styles.LEM }>
+      return  <ListItem style={ styles.LEM } onPress={() => this.setAlert(data) }>
                 <Text style={ styles.textColor }> {data.nome}</Text>
               </ListItem>;
     } else {
-      return  <ListItem style={ styles.TAR }>
+      return  <ListItem style={ styles.TAR } onPress={() => this.setAlert(data) }>
                 <CheckBox style={ styles.checkBoxFeatures } checked={false} />
                 <Text style={ styles.textColor }>{data.nome}</Text>
               </ListItem>;
@@ -93,9 +104,9 @@ export default class HomeScreen extends React.Component {
             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
             
             renderRow={data =>
-				<View>
-					{this.displayItem(data)}
-				</View>             
+              <View>
+                {this.displayItem(data)}
+              </View> 
             }
 
             renderLeftHiddenRow={data =>
@@ -110,6 +121,7 @@ export default class HomeScreen extends React.Component {
           />
           </Content>
         <CustomFab navigation={this.props.navigation}/>
+
       </Container>
     );
   }
