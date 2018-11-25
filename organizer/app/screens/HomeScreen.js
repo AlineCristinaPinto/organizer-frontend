@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ListView } from 'react-native';
+import { Text, View, ListView } from 'react-native';
 import { Container, Content, List, ListItem, Button, CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
 import CustomFab from '../components/Navigation/CustumFab';
+
+import styles from '../assets/style/HomeScreenStyle';
 
 export default class HomeScreen extends React.Component {
 
@@ -89,52 +91,8 @@ export default class HomeScreen extends React.Component {
               </Button>}
           />
           </Content>
-        <CustomFab/>
+        <CustomFab navigation={this.props.navigation}/>
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  page:{
-    backgroundColor: '#f7f7f7',
-  },
-
-  listContainer: {
-    paddingRight : 10,
-    paddingTop : 10,
-  },
-
-  textColor: {
-    color: "black",
-    marginLeft: 8,    
-    fontFamily: 'patrickH',
-    fontSize: 17,
-  },
-
-  checkBoxFeatures: {
-    marginLeft: 4,
-    borderColor: '#b23601',
-    //backgroundColor: '#fff',
-    //color: '#b23601'
-  },
-
-  LEM: { 
-    borderRightWidth: 4,
-    borderColor: '#4c7e5e',
-    borderStyle: 'solid',
-  },
-
-  SIM: { 
-    borderRightWidth: 4,
-    borderColor: '#012a7c',
-    borderStyle: 'solid',
-  },
-
-  TAR: { 
-    borderRightWidth: 4,
-    borderColor: '#b23601',
-    borderStyle: 'solid',
-  },
-
-});

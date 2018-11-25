@@ -1,5 +1,5 @@
 import React from 'react';
-import { Picker, View} from 'react-native';
+import { View} from 'react-native';
 import { Container, Textarea, Content, DatePicker,
     Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from '../assets/style/ItemScreensStyle';
 
-export default class CreateItemScreen extends React.Component {
+export default class UpdateLembreteScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -30,20 +30,10 @@ export default class CreateItemScreen extends React.Component {
         return (
             <Container>
                 <CustomHeaderBack navigation={this.props.navigation} />
-
-                <Content style={styles.formContainer}>
+                <Content style={styles.formContainerLembrete}>
                     <Form>
-                        <Text style={styles.welcomeTitle}>Criar Item</Text>
+                        <Text style={styles.welcomeTitleLembrete}>Editar Lembrete</Text>
                         
-                        <Picker>
-                            <Picker.Item style={ styles.fontContainer } label="Simples" value="simples" />
-                            <Picker.Item style={ styles.fontContainer } label="Lembrete" value="lembrete" />
-                            <Picker.Item style={ styles.fontContainer } label="Tarefa" value="tarefa" />                                
-                        </Picker>
-
-                        <Text></Text>
-                        <Item last></Item>
-
                         <Input style={ styles.fontContainer } placeholder="Nome" />
                         <Item last></Item>
 

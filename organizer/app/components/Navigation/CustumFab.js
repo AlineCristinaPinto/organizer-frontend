@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image} from "react-native";
 import { Fab, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
 
 class CustomFab extends Component {
 
@@ -9,7 +10,12 @@ class CustomFab extends Component {
         active: false,
     }; 
 
+    constructor(props){
+        super(props);
+    }
+
     render() {
+        let {navigate} = this.props.navigation;
         return (
             <View>
                 <Fab
@@ -21,11 +27,13 @@ class CustomFab extends Component {
 
                     <Icon name="plus" />
 
-                    <Button style={styles.pencil}>
+                    <Button style={styles.pencil}
+                        onPress={() => navigate('CreateItem')}>
                     <Icon name="pencil" />
                     </Button>
 
-                    <Button style={styles.imgMax}>
+                    <Button style={styles.imgMax}
+                        onPress={() => navigate('Max')}>
                     <Image
                         source={require('../../assets/images/max.png')}
                         style={styles.icon}

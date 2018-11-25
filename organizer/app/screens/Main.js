@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Image, View, SafeAreaView, ScrollView, Platform, StatusBar } from 'react-native';
+import { Image, View, SafeAreaView, ScrollView, Platform, StatusBar } from 'react-native';
 import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import MaxScreen from './MaxScreen';
+import CreateItemScreen from './CreateItemScreen';
+import UpdateTarefaScreen from './UpdateTarefaScreen';
+import UpdateLembreteScreen from "./UpdateLembreteScreen";
+import UpdateSimplesScreen from "./UpdateSimplesScreen";
 import { AppLoading, Font } from 'expo';
 
 export default class App extends React.Component {
@@ -13,21 +17,18 @@ export default class App extends React.Component {
     }
   
     componentWillMount() {
+        (async () => {
+            await Font.loadAsync({
+                'patrickH': require('../assets/fonts/Patrick_Hand/PatrickHand-Regular.ttf'),
+                'gloria' : require('../assets/fonts/Gloria_Hallelujah/GloriaHallelujah.ttf'),
+                'Roboto_medium' : require('../assets/fonts/Roboto-Medium.ttf'),
+            });
 
-    (async () => {
+            this.setState({
+                isReady: true
+            });
 
-        await Font.loadAsync({
-
-            'patrickH': require('../assets/fonts/Patrick_Hand/PatrickHand-Regular.ttf'),
-            'gloria' : require('../assets/fonts/Gloria_Hallelujah/GloriaHallelujah.ttf')
-        });
-
-        this.setState({
-            isReady: true
-        });
-
-    })();
-
+        })();
     }
 
     render() {
@@ -35,7 +36,9 @@ export default class App extends React.Component {
         if (!this.state.isReady) {
             return <AppLoading /> ;
         } else {
-            return (<AppContainer />);
+            return (
+                <AppContainer />
+            );
         }
     }
 }
@@ -54,7 +57,27 @@ const CustomDrawerComponent = (props) => (
 const AppDrawerNavigator = createDrawerNavigator({
     Home: HomeScreen,
     Max: MaxScreen,
-    Settings: SettingsScreen    
+    Settings: SettingsScreen,
+    CreateItem: {screen: CreateItemScreen,
+        navigationOptions: {
+            drawerLabel: ()=>null,
+        }
+    },
+    UpdateLembrete: {screen: UpdateLembreteScreen,
+        navigationOptions: {
+            drawerLabel: ()=>null,
+        }
+    },
+    UpdateSimples: {screen: UpdateSimplesScreen,
+        navigationOptions: {
+            drawerLabel: ()=>null,
+        }
+    },
+    UpdateTarefa: {screen: UpdateTarefaScreen,
+        navigationOptions: {
+            drawerLabel: ()=>null,
+        }
+    }
 }, {
     contentComponent: CustomDrawerComponent,
     contentOptions: {
@@ -64,12 +87,3 @@ const AppDrawerNavigator = createDrawerNavigator({
 })
 
 const AppContainer = createAppContainer(AppDrawerNavigator);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
