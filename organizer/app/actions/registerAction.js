@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import { ajaxRequest } from "./ajaxActions";
 
 
-export const handleRegistration = (data) => {
+export const handleRegistration = (data,callback) => {
 
     if(data.email ==="" 
     || data.name === ""
@@ -12,8 +13,11 @@ export const handleRegistration = (data) => {
 
     if(data.password === data.confirmPassword){
         let process = "?process=CreateUser";
-        let response = ajaxRequest(data);
-        return response;
+        const responseArray = async (responseJSON) => {
+            callback(responseJSON);
+        };
+
+        ajaxRequest(data,process,responseArray);
     }else{
         return false;
     }

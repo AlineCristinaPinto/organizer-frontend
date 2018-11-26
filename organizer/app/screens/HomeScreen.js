@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Text, View, ListView } from 'react-native';
+import { Alert, Text, View, ListView, AsyncStorage } from 'react-native';
 import { Container, Content, List, ListItem, Button, CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
@@ -85,7 +85,20 @@ export default class HomeScreen extends React.Component {
 		}else{
 			return null;
 		}
-	}
+  }
+  
+componentDidMount(){
+  (async () => {
+    try {
+      const value = await AsyncStorage.getItem("user");
+      console.log(value);
+     } catch (error) {
+       // Error retrieving data
+     }
+  })()
+  
+}
+    
 
   render() {
   

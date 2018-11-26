@@ -14,5 +14,6 @@ export const ajaxRequest = (data, process, callback) => {
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error(error);
-      });
-};
+      }
+    );
+}
