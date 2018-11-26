@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, SafeAreaView, ScrollView, Platform, StatusBar } from 'react-native';
+import { Image, View, SafeAreaView, ScrollView, Platform, StatusBar} from 'react-native';
 import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
@@ -15,7 +15,7 @@ export default class App extends React.Component {
     state = {
         isReady: false,
     }
-  
+
     componentWillMount() {
         (async () => {
             await Font.loadAsync({

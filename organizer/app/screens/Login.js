@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import {View, StatusBar, Alert, Image, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from "react-native";
-import { Container, Textarea, Content, DatePicker,
-    Text, Form, Item, Input, Right, Button, Card, CardItem } from "native-base";
+import {View, StatusBar, Alert, Image, TouchableWithoutFeedback, TouchableOpacity, Keyboard,   AsyncStorage  } from "react-native";
+import { Container, Text, Input, Button} from "native-base";
 
 import styles from "../assets/style/LoginScreenStyle.js";
 import { Actions } from "react-native-router-flux";
+import { handleLogin } from '../actions/loginActions';
 
 const PLACEHOLD_EMAIL ="Digite seu email";
 const PLACEHOLD_PASSWORD ="Digite sua senha";
@@ -12,11 +12,55 @@ const PLACEHOLD_PASSWORD ="Digite sua senha";
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = {  };
+        this.state = {email:"", password:"",}
     }
+    
 
     handleLogin = ()=>{
-        Actions.main();
+        data = {
+            email: this.state.email,
+            password: this.state.password,
+        };
+
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+
+            if(result === null){
+                Alert.alert(
+                    'Erro',
+                    'Usuário inexistente!',
+                    [
+                        {text: 'OK'},
+                    ],
+                    { cancelable: false }
+                    )
+            }else{
+                saveUser(responseJSON)
+                .then(() => Actions.main());
+            }
+        }
+        saveUser = async (responseJSON) => {
+            try {
+              console.log(responseJSON)
+              await AsyncStorage.setItem("user", JSON.stringify(responseJSON));
+            } catch (error) {
+              // Error saving data
+            }
+        }
+
+
+        result = handleLogin(data,responseFunction);
+
+        if(result === false){
+            Alert.alert(
+                'Erro',
+                'Verifique os campos foram preenchidos!',
+                [
+                    {text: 'OK'},
+                ],
+                { cancelable: false }
+                )
+        }
     }
     render() {
         return (
@@ -30,8 +74,8 @@ class Login extends Component {
               <View style={styles.lineStyle}></View>
               <Text style={styles.welcomeTitle}>Entrar</Text>
               <Text></Text>
-              <Input style={styles.inputStyle} placeholder={PLACEHOLD_EMAIL} ref="emailInput"/>
-              <Input style={styles.inputStyle} placeholder={PLACEHOLD_PASSWORD} ref="passwordInput" secureTextEntry={true}/>
+              <Input style={styles.inputStyle} placeholder={PLACEHOLD_EMAIL} onChangeText={(email) => this.setState({email})}/>
+              <Input style={styles.inputStyle} placeholder={PLACEHOLD_PASSWORD} onChangeText={(password) => this.setState({password})} secureTextEntry={true}/>
               <Text></Text>
               <Text></Text>
               <View style={styles.buttonContainer}>
