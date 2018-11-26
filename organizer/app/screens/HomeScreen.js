@@ -4,6 +4,7 @@ import { Container, Content, List, ListItem, Button, CheckBox } from 'native-bas
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
 import CustomFab from '../components/Navigation/CustumFab';
+import { handleListItem } from '../actions/listItemAction';
 
 import styles from '../assets/style/HomeScreenStyle';
 
@@ -18,28 +19,21 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const datas = [
-      { nome: 'Sorvete aumentou 1 golpinho', tipo: 'SIM'},
-      { nome: 'Fazer lista de química', tipo: 'TAR'},
-      { nome: 'Finalizar teste do projeto', tipo: 'TAR'},
-      { nome: 'Entregar livros no Campus I', tipo: 'LEM'},
-      { nome: 'Agendar visita técnica', tipo: 'LEM'},
-      { nome: 'Limpar meu quarto', tipo: 'TAR'},
-      { nome: 'Sair com os amigos', tipo: 'LEM'}      
-    ];
     this.state = {
+      datas : [],
       basic: true,
-      listViewData: datas,
+      listViewData: [],
       modalVisible: false,
-	    textSearch: "",
+      textSearch: "",
+      user: null,
     };
   }
 
   setAlert(data){
     Alert.alert(
-      data.nome,
-      "Descrição: " + data.tipo + "\nTipo: " + data.tipo 
-      + "\nData: " + data.tipo + "\nTags: " + data.tipo,
+      data.nameItem,
+      "Descrição: " + data.descriptionItem + "\nTipo: " + data.identifierItem 
+      + "\nData: " + data.dateItem + "\nTags: ",
       [],
       { cancelable: true }
     )
@@ -53,19 +47,19 @@ export default class HomeScreen extends React.Component {
   }
 
   changeCSS(data) {
-    if (data.tipo == 'SIM') {
+    if (data.identifierItem == 'SIM') {
       return  <ListItem style={ styles.SIM } onPress={() => this.setAlert(data) }>
-                <Text style={ styles.textColor }> {data.nome} </Text>
+                <Text style={ styles.textColor }> {data.nameItem} </Text>
               </ListItem>
     } else 
-    if (data.tipo == 'LEM') {
+    if (data.identifierItem == 'LEM') {
       return  <ListItem style={ styles.LEM } onPress={() => this.setAlert(data) }>
-                <Text style={ styles.textColor }> {data.nome}</Text>
+                <Text style={ styles.textColor }> {data.nameItem}</Text>
               </ListItem>;
     } else {
       return  <ListItem style={ styles.TAR } onPress={() => this.setAlert(data) }>
                 <CheckBox style={ styles.checkBoxFeatures } checked={false} />
-                <Text style={ styles.textColor }>{data.nome}</Text>
+                <Text style={ styles.textColor }>{data.nameItem}</Text>
               </ListItem>;
     }
   }
@@ -80,7 +74,7 @@ export default class HomeScreen extends React.Component {
 	
 	displayItem(data){
 		//filter items by name
-		if(data.nome.toLowerCase().indexOf(this.state.textSearch.toLowerCase()) > -1){
+		if(data.nameItem.toLowerCase().indexOf(this.state.textSearch.toLowerCase()) > -1){
 			return this.changeCSS(data);
 		}else{
 			return null;
@@ -91,14 +85,21 @@ componentDidMount(){
   (async () => {
     try {
       const value = await AsyncStorage.getItem("user");
-      console.log(value);
+      console.log(value)
+      this.setState({ user: JSON.parse(value) });
      } catch (error) {
        // Error retrieving data
      }
-  })()
-  
+  })().then(()=>{
+    const responseFunction = async (responseJSON) => {
+      const result = responseJSON;
+      this.setState({datas: result})
+      this.setState({listViewData: this.state.datas});
+
+    }
+    result = handleListItem(this.state.user.codEmail, responseFunction);
+  });
 }
-    
 
   render() {
   

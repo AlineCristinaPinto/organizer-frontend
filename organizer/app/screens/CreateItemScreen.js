@@ -13,7 +13,7 @@ import styles from '../assets/style/ItemScreensStyle';
 export default class CreateItemScreen extends React.Component {
 
     constructor(props) {
-        super(props);
+        super(props);    
         this.state = { chosenDate: new Date(),
             tipoItem: 'SIM' ,
             nomeInput: '',
@@ -21,7 +21,6 @@ export default class CreateItemScreen extends React.Component {
             modalVisible: false };
         this.setDate = this.setDate.bind(this);
     }
-    
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
@@ -34,6 +33,12 @@ export default class CreateItemScreen extends React.Component {
         this.setState({modalVisible: visible});
     }
 
+    goHome = () => {
+        let {navigate} = this.props.navigation;
+        console.log("aaa")
+
+        navigate('Home');
+    }
     handleCreateItem = () => {
         data = {
           typeItem: this.state.tipoItem,
@@ -51,7 +56,7 @@ export default class CreateItemScreen extends React.Component {
                     'Sucesso',
                     'Seu item foi criado!',
                     [
-                        {text: 'OK', onPress: console.log("ok")},
+                        {text: 'OK', onPress:() => this.goHome()},
                     ],
                     { cancelable: false }
                     )
@@ -72,7 +77,7 @@ export default class CreateItemScreen extends React.Component {
     };
     
     render() {
-        let {navigate} = this.props.navigation;        
+        let {navigate} = this.props.navigation;
         return (
             <Container>
                 <CustomHeaderBack navigation={this.props.navigation} />
