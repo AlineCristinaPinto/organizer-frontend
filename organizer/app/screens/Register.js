@@ -15,16 +15,17 @@ const PLACEHOLD_CONFIRM = "Digite sua senha novamente";
 class Register extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {email:"", name:"", password:"", confirmPassword:"",};
     }
 
     handleRegistry = () => {
         data = {
-          email:this.refs.emailInput.state.text,
-          name:this.refs.nameInput.state.text,
-          password:this.refs.passwordInput.state.text,
-          confirmPassword:this.refs.confirmPasswordInput.state.text,
+          email:this.state.email,
+          name:this.state.name,
+          password:this.state.password,
+          confirmPassword:this.state.confirmPassword,
         }
+        //console.log(data)
         let result = handleRegistration(data);
         console.log(result);
         /*
@@ -56,10 +57,12 @@ class Register extends Component {
             <View style={styles.lineStyle}></View>
             <Text style={styles.welcomeTitle}>Criar Conta</Text>
             <Text></Text>
-            <Input style={styles.inputStyle} placeholder={PLACEHOLD_EMAIL} ref="emailInput"/>
-            <Input style={styles.inputStyle} placeholder={PLACEHOLD_NAME} ref="nameInput" />
-            <Input style={styles.inputStyle} placeholder={PLACEHOLD_PASSWORD} ref="passwordInput" secureTextEntry={true}/>
-            <Input style={styles.inputStyle} placeholder={PLACEHOLD_CONFIRM} ref="confirmPasswordInput" secureTextEntry={true}/>
+            <Input style={styles.inputStyle} placeholder={PLACEHOLD_EMAIL} onChangeText={(email) => this.setState({email})}/>
+            <Input style={styles.inputStyle} placeholder={PLACEHOLD_NAME} onChangeText={(name) => this.setState({name})} />
+            <Input style={styles.inputStyle} placeholder={PLACEHOLD_PASSWORD} 
+            onChangeText={(password) => this.setState({password})} secureTextEntry={true}/>
+            <Input style={styles.inputStyle} placeholder={PLACEHOLD_CONFIRM} 
+            onChangeText={(confirmPassword) => this.setState({confirmPassword})} secureTextEntry={true}/>
             <Text></Text>
             <Text></Text>
             <View style={styles.buttonContainer}>

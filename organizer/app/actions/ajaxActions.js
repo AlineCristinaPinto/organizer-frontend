@@ -1,5 +1,5 @@
 export const ajaxRequest = (data,process) => {
-    let url = "http://192.168.0.22:8080/1/ServletTeste";
+    let url = "http://192.168.0.22:8080/organizer/servletcontroller"+process;
     fetch(url, {
         method: "POST",
         headers: {Accept:"application/json",
