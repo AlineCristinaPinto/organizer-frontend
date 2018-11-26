@@ -1,4 +1,4 @@
-export const ajaxRequest = (data,process) => {
+export const ajaxRequest = (data,process, callback) => {
     let url = "http://192.168.0.22:8080/organizer/servletcontroller"+process;
     fetch(url, {
         method: "POST",
@@ -9,7 +9,7 @@ export const ajaxRequest = (data,process) => {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      return responseJson;
+      callback(responseJson);
     })
     .catch((error) => {
       // eslint-disable-next-line no-console

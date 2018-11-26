@@ -25,24 +25,46 @@ class Register extends Component {
           password:this.state.password,
           confirmPassword:this.state.confirmPassword,
         }
-        //console.log(data)
-        let result = handleRegistration(data);
-        console.log(result);
-        /*
-        if(result){
-            // Works on both iOS and Android
+
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+
+            if(result){
+                // Works on both iOS and Android
+                Alert.alert(
+                    'Sucesso',
+                    'Seu cadastro foi efetuado!',
+                    [
+                        {text: 'OK', onPress: () => Actions.login()},
+                    ],
+                    { cancelable: false }
+                    )
+            }else{
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível completar o cadastro! Verifique se já não está cadastrado.',
+                    [
+                        {text: 'OK', onPress: () => Actions.register()},
+                    ],
+                    { cancelable: false }
+                    )
+            }
+        
+        }
+
+        result = handleRegistration(data,responseFunction)
+
+        if(result === false){
             Alert.alert(
-                'Sucesso',
-                'Seu cadastro foi efetuado!',
+                'Erro',
+                'Verifique os campos foram preenchidos ou se as senhas conferem!',
                 [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK'},
                 ],
                 { cancelable: false }
-            )
-        }else{
-
+                )
         }
-        */
+
     };
 
     render() {
