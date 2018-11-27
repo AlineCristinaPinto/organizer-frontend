@@ -7,6 +7,7 @@ import CustomFab from '../components/Navigation/CustumFab';
 import { handleListItem } from '../actions/listItemAction';
 import { handleConclude } from '../actions/concludeAction';
 import { handleItemDeletation } from '../actions/deleteItemAction';
+import { handleFilter } from '../actions/itemFilterActions';
 
 import styles from '../assets/style/HomeScreenStyle';
 
@@ -168,11 +169,29 @@ handleEditItem = (item) => {
   this.chooseUpdateScreen(item))
 }
 
+	filter = (tags, types) => {
+		const responseFunction = async (responseJSON) => {
+			
+			if(JSON.stringify(this.state.listViewData) != JSON.stringify(responseJSON)){
+				this.setState({
+					listViewData: responseJSON
+				});
+			}
+		}
+		
+		result = handleFilter(this.state.user.codEmail, tags, types, responseFunction);
+	}
+
 
   render() {
+	const { navigation } = this.props;
+	const tags = navigation.getParam("tags", []);
+	const types = navigation.getParam("types", []);
   
     return (
+		
       <Container style={styles.page}>
+		{types.length > 0 || tags.length > 0 ? this.filter(tags, types) : null}
         
         <CustumHeader onPress={() =>this.props.navigation.openDrawer()} changeTextSearch = {this.changeTextSearch} />
 
