@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Card, CardItem, CheckBox, ListItem, Text, Item , Input} from "native-base";
+import { StyleSheet, View, Text } from "react-native";
+import { Input} from "native-base";
 
 class ModalPassword extends React.Component {
     constructor(props){
@@ -13,16 +13,18 @@ class ModalPassword extends React.Component {
     }
     render() {
         return (
-            <View style={styles.bodyContainer}>         
-                <Input style={styles.inputStyle} 
-                placeholder={"Digite a senha antiga:"} 
-                onChangeText={(oldPassword) => this.setState({oldPassword})}/>
-                <Input style={styles.inputStyle} 
-                placeholder={"Digite a nova senha:"} 
-                onChangeText={(newPassword) => this.setState({newPassword})}/>
-                <Input style={styles.inputStyle} 
-                placeholder={"Confirme a nova senha:"} 
-                onChangeText={(newPassword) => this.setState({newPassword})}/>
+            <View style={styles.bodyContainer}>
+                <Text></Text>
+                <Text style={styles.textColor}>Senha antiga</Text>      
+                    <Input style={styles.inputStyle} 
+                    onChangeText={(oldPassword) => this.setState({oldPassword})}/>
+                <Text style={styles.textColor}>Nova Senha</Text>
+                    <Input style={styles.inputStyle} 
+                    onChangeText={(newPassword) => this.setState({newPassword})}/>
+                <Text style={styles.textColor}>Confirmar nova senha:</Text>
+                    <Input style={styles.inputStyle} 
+                    onChangeText={(newPassword) => this.setState({newPassword})}/>
+                <Text></Text>
             </View>
             
         );
@@ -33,34 +35,26 @@ export default ModalPassword;
 
 const styles = StyleSheet.create({
 
-    textContent:{
-        fontFamily: "patrickH",
-    },
-
     bodyContainer:{
-        padding: 22,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor:"white"
     },
 
     textColor: {
         color: "black",
         marginLeft: 8,    
         fontFamily: "patrickH",
-        fontSize: 12,
-    },
-    
-    checkBoxFeatures: {
-        marginLeft: 4,
+        fontSize: 15,
     },
 
     inputStyle:{
         borderBottomColor: "black",
         borderBottomWidth: 1,
         fontFamily: "patrickH",
-        width: "90%",
-        color: "white",
+        fontSize: 20,
+        width: '60%',
+        color: "black",
+        padding: 20,
     },
 
 });

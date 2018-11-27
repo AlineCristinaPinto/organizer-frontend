@@ -26,6 +26,7 @@ export default class SettingsScreen extends React.Component {
       password:"",
       confirmPassword:"",
       modalVisible: false,
+      modalVisibleII: false,
     }
   }
 
@@ -37,6 +38,10 @@ export default class SettingsScreen extends React.Component {
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
+  }
+
+  setModalVisibleII(visible) {
+    this.setState({modalVisibleII: visible});
   }
   
   render() {
@@ -67,7 +72,7 @@ export default class SettingsScreen extends React.Component {
                 <Text></Text>
                 <View style={styles.lineStyle}></View>
                 <View style={styles.footer}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.setModalVisibleII(true)}>
                     <Text style={styles.linkTextStyle}>
                         Excluir conta
                     </Text>
@@ -78,34 +83,65 @@ export default class SettingsScreen extends React.Component {
             </TouchableWithoutFeedback>
 
             <Modal isVisible={this.state.modalVisible}
-                            onBackdropPress={ ()=> this.setModalVisible(false)}
-                            onBackButtonPress={ ()=> this.setModalVisible(false)}>
-                            <View style={ styles.modalContent }>
-                                <View style={ styles.headerContainer }>
-                                    <Text style={ styles.title }>Alterar Senha</Text>
-                                    <Right>
-                                        <Button
-                                        onPress={ ()=> this.setModalVisible(false)}
-                                        transparent>
-                                            <Icon name="close" />
-                                        </Button>
-                                    </Right>
-                                </View>    
-                                      
-                                <ModalPassword />
-                                
-                                <View style={styles.footerContainer}>        
-                                    <Button style={styles.cancel} 
-                                    onPress={ ()=> this.setModalVisible(false)}>
-                                        <Text style={ styles.fontContainer }> Cancelar </Text>
-                                    </Button>
-                                    <Right>
-                                        <Button style={styles.add}>
-                                            <Text style={ styles.fontContainer }> Salvar </Text>
-                                        </Button>
-                                    </Right>
-                                </View>
-                            </View>
+                onBackdropPress={ ()=> this.setModalVisible(false)}
+                onBackButtonPress={ ()=> this.setModalVisible(false)}>
+                <View style={ styles.modalContent }>
+                    <View style={ styles.headerContainer }>
+                        <Text style={ styles.title }>Alterar Senha</Text>
+                        <Right>
+                            <Button
+                            onPress={ ()=> this.setModalVisible(false)}
+                            transparent>
+                                <Icon name="close" />
+                            </Button>
+                        </Right>
+                    </View>    
+                            
+                    <ModalPassword />
+                    
+                    <View style={styles.footerContainer}>        
+                        <Button style={styles.cancel} 
+                        onPress={ ()=> this.setModalVisible(false)}>
+                            <Text style={ styles.fontContainer }> Cancelar </Text>
+                        </Button>
+                        <Right>
+                            <Button style={styles.add}>
+                                <Text style={ styles.fontContainer }> Salvar </Text>
+                            </Button>
+                        </Right>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal isVisible={this.state.modalVisibleII}
+                onBackdropPress={ ()=> this.setModalVisibleII(false)}
+                onBackButtonPress={ ()=> this.setModalVisibleII(false)}>
+                <View style={ styles.modalContent }>
+                    <View style={ styles.headerContainer }>
+                        <Text style={ styles.title }>Excluir Conta</Text>
+                        <Right>
+                            <Button
+                            onPress={ ()=> this.setModalVisibleII(false)}
+                            transparent>
+                                <Icon name="close" />
+                            </Button>
+                        </Right>
+                    </View>    
+                            
+                    <ModalDelete />
+                    
+                    <View style={styles.footerContainer}>        
+                        <Button style={styles.cancel} 
+                        onPress={ ()=> this.setModalVisibleII(false)}>
+                            <Text style={ styles.fontContainer }> Cancelar </Text>
+                        </Button>
+                        <Right>
+                            <Button style={styles.add}>
+                                <Text style={ styles.fontContainer }> Excluir </Text>
+                            </Button>
+                        </Right>
+                    </View>
+                </View>
             </Modal>
        </Container>
     );

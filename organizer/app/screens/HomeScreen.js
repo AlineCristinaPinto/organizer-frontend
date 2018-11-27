@@ -109,8 +109,6 @@ componentDidMount(){
        console.error(error)
      }
   })().then(_ => this.listItems())
-
-    result = handleListItem(this.state.user.codEmail, responseFunction);
 };
 
 

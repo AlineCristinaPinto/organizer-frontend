@@ -25,7 +25,7 @@ export default StyleSheet.create({
     },
   
     title: {
-        textAlign: "center",
+      textAlign: "center",
       fontFamily: "gloria",
       fontSize: 25,
       alignItems: "center",
@@ -40,9 +40,11 @@ export default StyleSheet.create({
     },
 
     add:{
-        backgroundColor: "#0fa400",
-        width: 150,
-        justifyContent: "center",
+        backgroundColor: '#0fa400',
+    },
+
+    cancel:{
+        backgroundColor: '#e25a00',
     },
 
     buttonContainer:{
@@ -81,4 +83,51 @@ export default StyleSheet.create({
         borderRadius: 4,
         borderColor: 'rgba(0, 0, 0, 0.1)',
     },
+
+    headerContainer: {
+        top: 0,
+        right: 0,
+        left: 0,
+        padding: 10,
+        width: '100%',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        ...Platform.select({
+          ios: {
+            shadowColor: 'black',
+            shadowOffset: { height: -3 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+          },
+          android: {
+            elevation: 10,
+          },
+        }),
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexDirection: 'row',
+    },
+
+    footerContainer:{
+        bottom: 0,
+        padding: 12,
+        width: '100%',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        ...Platform.select({
+          ios: {
+            shadowColor: 'black',
+            shadowOffset: { height: -3 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+          },
+          android: {
+            elevation: 10,
+          },
+        }),
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexDirection: 'row',
+    },
+
   });
