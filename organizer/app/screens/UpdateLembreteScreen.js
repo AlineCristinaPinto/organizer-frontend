@@ -103,7 +103,8 @@ export default class UpdateLembreteScreen extends React.Component {
                         <Item last></Item>
 
                         <Text></Text>
-                        <Textarea style={ styles.fontContainer } placeholder="Descrição" rowSpan={5} cowSpan={5} value={this.state.data.descriptionItem} bordered />
+                        <Textarea style={ styles.fontContainer } placeholder="Descrição" rowSpan={5} cowSpan={5} 
+                        value={this.state.data.descriptionItem} onChangeText={(text) => this.value = text} on bordered />
                        
                         <Item last>
                             <DatePicker style={ styles.fontContainer } placeHolderText="Data" onDateChange={this.setDate} />

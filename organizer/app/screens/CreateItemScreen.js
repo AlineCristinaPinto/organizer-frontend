@@ -1,6 +1,6 @@
 import React from 'react';
-import { Alert, Picker, View} from 'react-native';
-import { Container, Textarea, Content, DatePicker, List, ListView,
+import { Alert, Picker, View, ListView, AsyncStorage} from 'react-native';
+import { Container, Textarea, Content, DatePicker, List, ListItem, 
     Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Modal from "react-native-modal";
@@ -14,15 +14,16 @@ import styles from '../assets/style/ItemScreensStyle';
 export default class CreateItemScreen extends React.Component {
 
     constructor(props) {
-        super(props);    
+        super(props);
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = { chosenDate: new Date(),
             tipoItem: 'SIM' ,
             nomeInput: '',
             description: '',
             modalVisible: false,
             arrTags: [],
+            listViewData: [],
         };
-        //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1!==r2 });
         this.setDate = this.setDate.bind(this);
     }
 
@@ -40,16 +41,14 @@ export default class CreateItemScreen extends React.Component {
 
     goHome = () => {
         let {navigate} = this.props.navigation;
-        console.log("aaa")
-
         navigate('Home');
     }
 
-    /*listTags = async () =>{
+    listTags = async () =>{
         const responseFunction = async (responseJSON) => {
           const result = responseJSON;
           this.setState({arrTags: result})
-          console.log('ola' + arrTags);
+          this.setState({listViewData: this.state.arrTags})
         }
         result = handleListTags(this.state.user.codEmail, responseFunction);
     }
@@ -58,15 +57,12 @@ export default class CreateItemScreen extends React.Component {
         (async () => {
           try {
             const value = await AsyncStorage.getItem("user");
-            console.log("desgraça")
             this.setState({ user: JSON.parse(value) });
            } catch (error) {
-             // Error retrieving data
+             console.error(error)
            }
-        })().then(_ => this.listTags().then(
-            console.log(this.state.arrTags)
-        ))
-    }*/
+        })().then(_ => this.listTags())
+    }
     
     handleCreateItem = () => {
         data = {
@@ -175,7 +171,7 @@ export default class CreateItemScreen extends React.Component {
                                     <Item last></Item>
                                     <Text style={ styles.textContent }>Lista de Tags:</Text>
                                     <List
-                                        dataSource={this.ds.cloneWithRows(this.state.arrTags)}
+                                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                                         renderRow={data =>
                                             <ListItem>
                                                 <CheckBox style={ styles.checkBoxFeatures } checked={false} />
