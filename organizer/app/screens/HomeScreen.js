@@ -87,7 +87,6 @@ export default class HomeScreen extends React.Component {
       const result = responseJSON;
       this.setState({datas: result})
       this.setState({listViewData: this.state.datas});
-  
     }
     result = handleListItem(this.state.user.codEmail, responseFunction);
   }
@@ -109,8 +108,6 @@ componentDidMount(){
        console.error(error)
      }
   })().then(_ => this.listItems())
-
-    result = handleListItem(this.state.user.codEmail, responseFunction);
 };
 
 
