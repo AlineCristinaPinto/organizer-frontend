@@ -4,12 +4,6 @@ import { Icon } from 'native-base'
 
 export default class SettingsScreen extends React.Component {
 
-  static navigationOptions = {
-    drawerIcon: ({ tintColor }) => (
-      <Icon name="settings" style={{ fontSize:24, color:tintColor }}/>
-    ),
-  }
-
   render() {
     return (
       <View style={styles.container}>

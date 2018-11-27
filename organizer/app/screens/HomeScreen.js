@@ -10,12 +10,6 @@ import styles from '../assets/style/HomeScreenStyle';
 
 export default class HomeScreen extends React.Component {
 
-  static navigationOptions = {
-    drawerIcon: ({ tintColor }) => (
-      <Icon name="home" style={{ fontSize:24, color:tintColor }}/>
-    ),
-  }
-
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });

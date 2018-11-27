@@ -8,6 +8,7 @@ import CreateItemScreen from './CreateItemScreen';
 import UpdateTarefaScreen from './UpdateTarefaScreen';
 import UpdateLembreteScreen from "./UpdateLembreteScreen";
 import UpdateSimplesScreen from "./UpdateSimplesScreen";
+import SideMenu from './SideMenu';
 import { AppLoading, Font } from 'expo';
 
 export default class App extends React.Component {
@@ -43,21 +44,16 @@ export default class App extends React.Component {
     }
 }
 
-const CustomDrawerComponent = (props) => (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
-        <View style={{ marginTop: 15, height:150, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require('../assets/images/user.png')} style={{ height: 120, width: 120, borderRadius: 60 }} />
-        </View>
-        <ScrollView>
-            <DrawerItems {...props} />
-        </ScrollView>
-    </SafeAreaView>
-)
-
 const AppDrawerNavigator = createDrawerNavigator({
-    Home: HomeScreen,
-    Max: MaxScreen,
-    Settings: SettingsScreen,
+    Home: {
+        screen: HomeScreen
+    },
+    Max: {
+        screen: MaxScreen
+    },
+    Settings: {
+        screen: SettingsScreen
+    },
     CreateItem: {screen: CreateItemScreen,
         navigationOptions: {
             drawerLabel: ()=>null,
@@ -79,11 +75,7 @@ const AppDrawerNavigator = createDrawerNavigator({
         }
     }
 }, {
-    contentComponent: CustomDrawerComponent,
-    contentOptions: {
-        activeTintColor: '#78E7F3',
-        inactiveTintColor: 'white',
-    }
+    contentComponent: SideMenu,
 })
 
 const AppContainer = createAppContainer(AppDrawerNavigator);

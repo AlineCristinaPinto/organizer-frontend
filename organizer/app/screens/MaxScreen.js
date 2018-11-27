@@ -7,15 +7,6 @@ import styles from '../assets/style/MaxScreenStyle';
 
 export default class MaxScreen extends React.Component {
   
-  static navigationOptions = {
-    drawerIcon: ({ tintColor }) => (
-        <Image
-            source={require('../assets/images/max.png')}
-            style={styles.icon}
-        />
-    ),
-  }
-
   render() {
     return (
       <Container style={ styles.page }>
