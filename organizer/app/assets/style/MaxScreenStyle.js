@@ -1,8 +1,16 @@
 import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
-    page:{
+    viewPager: {
+      flex: 1
+    },
+
+    page: {
       backgroundColor: 'black',
+    },
+
+    manualPage: {
+      color: "#5bc0de",
     },
   
     container: {
@@ -50,4 +58,15 @@ export default StyleSheet.create({
       flexDirection: "row",
       justifyContent: "center"
     },
+
+    backButton: {   
+      alignItems: 'center',  
+      backgroundColor: 'black',
+      borderRadius: 15,
+      padding: 10,
+    },
+
+    backButtonText: {
+      color: "#5bc0de",
+    }
   });

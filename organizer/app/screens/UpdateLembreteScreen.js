@@ -1,5 +1,5 @@
 import React from 'react';
-import { View} from 'react-native';
+import { View, AsyncStorage} from 'react-native';
 import { Container, Textarea, Content, DatePicker,
     Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
@@ -13,7 +13,10 @@ export default class UpdateLembreteScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date(), modalVisible: false };
+        this.state = { chosenDate: new Date(),
+            modalVisible: false,
+            nomeInput : '',
+            data: {}, };
         this.setDate = this.setDate.bind(this);
     }
     
@@ -24,6 +27,66 @@ export default class UpdateLembreteScreen extends React.Component {
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }
+
+    componentWillMount(){
+        (async () => {
+          try {
+            const value = await AsyncStorage.getItem("item");
+            console.log(value)
+            this.setState({ data: JSON.parse(value) });
+            this.setState({ nomeInput: this.state.data.nameItem });
+            
+           } catch (error) {
+            console.error(error)
+        }
+        })().then(this.setDate(this.state.data.dateItem),
+        console.log(this.state.chosenDate))
+ 
+    }
+    
+    goHome = () => {
+        let {navigate} = this.props.navigation;
+        console.log("aaa")
+
+        navigate('Home');
+    }
+
+    handleUpdateItem = () => {
+        datas = {
+          typeItem: 'LEM',
+          nameItem: this.state.nomeInput,
+          descriptionItem: this.state.descriptionInput,
+          dateItem: this.state.chosenDate,
+        }
+
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+
+            if(result){
+                // Works on both iOS and Android
+                Alert.alert(
+                    'Sucesso',
+                    'Seu item foi editado!',
+                    [
+                        {text: 'OK', onPress:() => this.goHome()},
+                    ],
+                    { cancelable: false }
+                    )
+            }else{
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível completar a edição do item.',
+                    [
+                        {text: 'OK', onPress: console.log("ok")},
+                    ],
+                    { cancelable: false }
+                    )
+            }
+        }
+
+        result = handleItemUpdation(datas, responseFunction);
+
+    };
     
     render() {
         let {navigate} = this.props.navigation;
@@ -34,14 +97,16 @@ export default class UpdateLembreteScreen extends React.Component {
                     <Form>
                         <Text style={styles.welcomeTitleLembrete}>Editar Lembrete</Text>
                         
-                        <Input style={ styles.fontContainer } placeholder="Nome" />
+                        <Input style={ styles.fontContainer } placeholder="Nome" 
+                        value={this.state.data.nameItem}
+                        onChangeText={(nomeInput) => this.setState({nomeInput})} />
                         <Item last></Item>
 
                         <Text></Text>
-                        <Textarea style={ styles.fontContainer } placeholder="Descrição" rowSpan={5} cowSpan={5} bordered />
+                        <Textarea style={ styles.fontContainer } placeholder="Descrição" rowSpan={5} cowSpan={5} value={this.state.data.descriptionItem} bordered />
                        
                         <Item last>
-                            <DatePicker style={ styles.fontContainer } placeHolderText="Data" onDateChange={this.setDate}/>
+                            <DatePicker style={ styles.fontContainer } placeHolderText="Data" onDateChange={this.setDate} />
                         </Item>
 
                         <Button style={ styles.tags }
@@ -94,7 +159,8 @@ export default class UpdateLembreteScreen extends React.Component {
                                 <Text style={ styles.fontContainer }> Cancelar </Text>
                             </Button>
                             <Right>
-                                <Button style={styles.add}>
+                                <Button style={styles.add}
+                                onPress={ this.handleUpdateItem }>
                                     <Text style={ styles.fontContainer }> Salvar </Text>
                                 </Button>
                             </Right>
