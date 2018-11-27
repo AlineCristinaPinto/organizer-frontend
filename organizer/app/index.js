@@ -4,3 +4,5 @@ import Main from "./screens/Main";
 import Routes from "./screens/Routes";
 
 export default() => <Main/>;
+
+console.disableYellowBox = true;
