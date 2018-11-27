@@ -1,6 +1,6 @@
 import { ajaxRequest } from "./ajaxActions";
 
-export const handleListItem = (emailUser, callback) => {
+/*export const handleListItem = (emailUser, callback) => {
 
     let process = "?process=LoadItem";
     console.log(emailUser)
@@ -13,4 +13,4 @@ export const handleListItem = (emailUser, callback) => {
 
     ajaxRequest(data, process, responseArray);
 
-};
+};*/

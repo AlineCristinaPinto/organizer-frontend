@@ -3,4 +3,6 @@ import Register from "./screens/Register";
 import Main from "./screens/Main";
 import Routes from "./screens/Routes";
 
-export default() => <Routes/>;
+export default() => <Main/>;
+
+console.disableYellowBox = true;
