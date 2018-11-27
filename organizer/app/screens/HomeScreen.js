@@ -1,21 +1,16 @@
 import React from 'react';
-import { Alert, Text, View, ListView, AsyncStorage } from 'react-native';
+import { Alert, Text, View, ListView, AsyncStorage, RefreshControl} from 'react-native';
 import { Container, Content, List, ListItem, Button, CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
 import CustomFab from '../components/Navigation/CustumFab';
 import { handleListItem } from '../actions/listItemAction';
 import { handleConclude } from '../actions/concludeAction';
+import { handleItemDeletation } from '../actions/deleteItemAction';
 
 import styles from '../assets/style/HomeScreenStyle';
 
 export default class HomeScreen extends React.Component {
-
-  static navigationOptions = {
-    drawerIcon: ({ tintColor }) => (
-      <Icon name="home" style={{ fontSize:24, color:tintColor }}/>
-    ),
-  }
 
   constructor(props) {
     super(props);
@@ -28,6 +23,7 @@ export default class HomeScreen extends React.Component {
       textSearch: "",
       user: null,
 	  itemChanging: null,
+      refreshing: false,
     };
   }
 
@@ -41,11 +37,16 @@ export default class HomeScreen extends React.Component {
     )
   }
   
-  deleteRow(secId, rowId, rowMap) {
+  deleteRow(data, secId, rowId, rowMap) {
     rowMap[`${secId}${rowId}`].props.closeRow();
     const newData = [...this.state.listViewData];
     newData.splice(rowId, 1);
     this.setState({ listViewData: newData });
+    
+    const responseFunction = async (responseJSON) => {
+      const result = responseJSON;
+    }    
+    result = handleItemDeletation(this.state.user.codEmail, data, responseFunction);
   }
   
 	changeStatus(item){
@@ -112,7 +113,24 @@ export default class HomeScreen extends React.Component {
 			return null;
 		}
   }
+
+  listItems = async () =>{
+    const responseFunction = async (responseJSON) => {
+      const result = responseJSON;
+      this.setState({datas: result})
+      this.setState({listViewData: this.state.datas});
   
+    }
+    result = handleListItem(this.state.user.codEmail, responseFunction);
+  }
+
+_onRefresh = () => {
+    this.setState({refreshing: true});
+    this.listItems().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
 componentDidMount(){
   (async () => {
     try {
@@ -120,18 +138,39 @@ componentDidMount(){
       console.log(value)
       this.setState({ user: JSON.parse(value) });
      } catch (error) {
-       // Error retrieving data
+       console.error(error)
      }
-  })().then(()=>{
-    const responseFunction = async (responseJSON) => {
-      const result = responseJSON;
-      this.setState({datas: result})
-      this.setState({listViewData: this.state.datas});
+  })().then(_ => this.listItems())
 
-    }
     result = handleListItem(this.state.user.codEmail, responseFunction);
-  });
+};
+
+
+chooseUpdateScreen = (data) =>{
+  let {navigate} = this.props.navigation;
+  if(data.identifierItem === 'TAR'){
+    navigate('UpdateTarefa');
+  } else if (data.identifierItem === 'LEM'){
+    navigate('UpdateLembrete');
+  } else {
+    navigate('UpdateSimples');
+  }
 }
+
+saveItem = async (responseJSON) => {
+  try {
+    //console.log(responseJSON)
+    await AsyncStorage.setItem("item", JSON.stringify(responseJSON));
+  } catch (error) {
+    // Error saving data
+  }
+}
+
+handleEditItem = (item) => {
+  this.saveItem(item).then(
+  this.chooseUpdateScreen(item))
+}
+
 
   render() {
   
@@ -145,6 +184,12 @@ componentDidMount(){
           <Text></Text>
 
           <List
+            refreshControl={
+              <RefreshControl
+                 refreshing={this.state.refreshing}
+                 onRefresh={this._onRefresh}
+              />
+            }
             leftOpenValue={75}
             rightOpenValue={-75}
             dataSource={this.ds.cloneWithRows(this.state.listViewData)}
@@ -156,12 +201,12 @@ componentDidMount(){
             }
 
             renderLeftHiddenRow={data =>
-              <Button full onPress={() => alert(data)}>
+              <Button full onPress={_ => this.handleEditItem(data)}>
                 <Icon active name="edit" />
               </Button>}
 
             renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-              <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+              <Button full danger onPress={_ => this.deleteRow(data, secId, rowId, rowMap)}>
                 <Icon active name="trash" />
               </Button>}
           />

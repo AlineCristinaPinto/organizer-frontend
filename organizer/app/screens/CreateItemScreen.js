@@ -1,12 +1,13 @@
 import React from 'react';
 import { Alert, Picker, View} from 'react-native';
-import { Container, Textarea, Content, DatePicker,
+import { Container, Textarea, Content, DatePicker, List, ListView,
     Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Modal from "react-native-modal";
 import ModalContent from "../components/Navigation/ModalContent";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { handleItemCreation } from '../actions/createItemAction';
+import { handleListTags } from '../actions/listTagsAction';
 
 import styles from '../assets/style/ItemScreensStyle';
 
@@ -18,9 +19,13 @@ export default class CreateItemScreen extends React.Component {
             tipoItem: 'SIM' ,
             nomeInput: '',
             description: '',
-            modalVisible: false };
+            modalVisible: false,
+            arrTags: [],
+        };
+        //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1!==r2 });
         this.setDate = this.setDate.bind(this);
     }
+
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
@@ -39,6 +44,30 @@ export default class CreateItemScreen extends React.Component {
 
         navigate('Home');
     }
+
+    /*listTags = async () =>{
+        const responseFunction = async (responseJSON) => {
+          const result = responseJSON;
+          this.setState({arrTags: result})
+          console.log('ola' + arrTags);
+        }
+        result = handleListTags(this.state.user.codEmail, responseFunction);
+    }
+
+    componentDidMount(){
+        (async () => {
+          try {
+            const value = await AsyncStorage.getItem("user");
+            console.log("desgraça")
+            this.setState({ user: JSON.parse(value) });
+           } catch (error) {
+             // Error retrieving data
+           }
+        })().then(_ => this.listTags().then(
+            console.log(this.state.arrTags)
+        ))
+    }*/
+    
     handleCreateItem = () => {
         data = {
           typeItem: this.state.tipoItem,
@@ -136,11 +165,32 @@ export default class CreateItemScreen extends React.Component {
                                     </Right>
                                 </View>    
                                       
-                                <ModalContent />
+                                <View style={styles.bodyContainer}>         
+                                    <Text style={ styles.textContent }>Selecionadas:</Text>
+                                    <Card>
+                                        <CardItem header bordered>
+                                            <Text></Text>
+                                        </CardItem>
+                                    </Card>
+                                    <Item last></Item>
+                                    <Text style={ styles.textContent }>Lista de Tags:</Text>
+                                    <List
+                                        dataSource={this.ds.cloneWithRows(this.state.arrTags)}
+                                        renderRow={data =>
+                                            <ListItem>
+                                                <CheckBox style={ styles.checkBoxFeatures } checked={false} />
+                                                <Text style={ styles.textColor }>{data.tagName}</Text>
+                                            </ListItem> 
+                                        }
+                                    >
+                                    </List>
+
+                                </View>
                                 
                                 <View style={styles.footerContainer}>        
                                     <Button style={styles.cancel} 
-                                    onPress={ ()=> this.setModalVisible(false)}>
+                                    //onPress={ ()=> this.setModalVisible(false)}
+                                    >
                                         <Text style={ styles.fontContainer }> Cancelar </Text>
                                     </Button>
                                     <Right>

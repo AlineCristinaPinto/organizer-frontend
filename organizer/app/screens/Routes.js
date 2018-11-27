@@ -44,8 +44,8 @@ class Routes extends Component {
                 <Router>
                   <Scene key = "root" hideNavBar={true}>
                     <Scene key = "register" component = {Register} hideNavBar={true}  />
-                    <Scene key = "login" component = {Login} hideNavBar={true} initial = {!this.state.hasToken}/>
-                    <Scene key= "main" component={App} hideNavBar={true} initial = {this.state.hasToken}/>
+                    <Scene key = "login" component = {Login} hideNavBar={true} initial = {this.state.hasToken}/>
+                    <Scene key= "main" component={App} hideNavBar={true} initial = {!this.state.hasToken}/>
                   </Scene>
                 </Router>
             );
