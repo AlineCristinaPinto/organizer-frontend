@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CustumHeader from '../components/Navigation/CustomHeader';
 import CustomFab from '../components/Navigation/CustumFab';
 import { handleListItem } from '../actions/listItemAction';
+import { handleConclude } from '../actions/concludeAction';
 
 import styles from '../assets/style/HomeScreenStyle';
 
@@ -26,13 +27,14 @@ export default class HomeScreen extends React.Component {
       modalVisible: false,
       textSearch: "",
       user: null,
+	  itemChanging: null,
     };
   }
 
   setAlert(data){
     Alert.alert(
       data.nameItem,
-      "Descrição: " + data.descriptionItem + "\nTipo: " + data.identifierItem 
+      "Id: " +data.seqItem + "\nDescrição: " + data.descriptionItem + "\nTipo: " + data.identifierItem 
       + "\nData: " + data.dateItem + "\nTags: ",
       [],
       { cancelable: true }
@@ -45,6 +47,35 @@ export default class HomeScreen extends React.Component {
     newData.splice(rowId, 1);
     this.setState({ listViewData: newData });
   }
+  
+	changeStatus(item){
+		this.setState({
+			itemChanging: item.seqItem
+		});
+		const responseFunction = async (responseJSON) => {
+			if(responseJSON){
+				var auxArray = this.state.listViewData;
+				var index = auxArray.indexOf(item);
+				auxArray.splice(index, 1);
+				this.setState({
+					listViewData: auxArray
+				});
+				this.setState({
+					itemChanging: null
+				});
+			}
+
+		}
+		
+		result = handleConclude(this.state.user.codEmail, item, responseFunction);
+	}
+  
+	arrayObjectIndexOf(myArray, searchTerm, property) {
+		for(var i = 0, len = myArray.length; i < len; i++) {
+			if (myArray[i][property] === searchTerm) return i;
+		}
+		return -1;
+	}
 
   changeCSS(data) {
     if (data.identifierItem == 'SIM') {
@@ -57,8 +88,9 @@ export default class HomeScreen extends React.Component {
                 <Text style={ styles.textColor }> {data.nameItem}</Text>
               </ListItem>;
     } else {
-      return  <ListItem style={ styles.TAR } onPress={() => this.setAlert(data) }>
-                <CheckBox style={ styles.checkBoxFeatures } checked={false} />
+      return  <ListItem style={ styles.TAR } >
+                <CheckBox style={ styles.checkBoxFeatures } checked = {data.seqItem == this.state.itemChanging} 
+				onPress={() => this.changeStatus(data)} />
                 <Text style={ styles.textColor }>{data.nameItem}</Text>
               </ListItem>;
     }
