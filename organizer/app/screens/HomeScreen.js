@@ -80,7 +80,7 @@ export default class HomeScreen extends React.Component {
 			return null;
 		}
   }
-  
+  /*
 componentDidMount(){
   (async () => {
     try {
@@ -88,7 +88,7 @@ componentDidMount(){
       console.log(value)
       this.setState({ user: JSON.parse(value) });
      } catch (error) {
-       // Error retrieving data
+       console.error(error)
      }
   })().then(()=>{
     const responseFunction = async (responseJSON) => {
@@ -99,7 +99,7 @@ componentDidMount(){
     }
     result = handleListItem(this.state.user.codEmail, responseFunction);
   });
-}
+}*/
 
   render() {
   

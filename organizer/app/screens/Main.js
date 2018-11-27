@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, SafeAreaView, ScrollView, Platform, StatusBar} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
