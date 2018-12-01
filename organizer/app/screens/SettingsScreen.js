@@ -11,11 +11,12 @@ import ModalPassword from '../components/Settings/ModalPassword';
 import ModalDelete from '../components/Settings/ModalDelete';
 
 import styles from "../assets/style/SettingsScreenStyle.js";
+import { handleUpdate } from "../actions/settingsActions";
+import md5 from "react-native-md5";
 
 //import { Actions } from "react-native-router-flux";
 //import { handleLogin } from '../actions/loginActions';
 
-const PLACEHOLD_PASSWORD = "Digite sua senha";
 const PLACEHOLD_NAME ="Digite seu nome";
 
 export default class SettingsScreen extends React.Component {
@@ -23,12 +24,27 @@ export default class SettingsScreen extends React.Component {
     super(props)
     this.state= { 
       name:"",
+      oldPassword:"",
       password:"",
       confirmPassword:"",
+      nameInput: "",
       modalVisible: false,
       modalVisibleII: false,
+      user: null,
     }
   }
+
+  componentDidMount(){
+    (async () => {
+      try {
+        const value = await AsyncStorage.getItem("user");
+        console.log(value)
+        this.setState({ user: JSON.parse(value) });
+       } catch (error) {
+         console.error(error)
+       }
+    })()
+  };
 
   static navigationOptions = {
     drawerIcon: ({ tintColor }) => (
@@ -44,6 +60,90 @@ export default class SettingsScreen extends React.Component {
     this.setState({modalVisibleII: visible});
   }
   
+  handleChangeName = () => {
+      if(this.state.user.userName === this.state.name){
+          console.log(this.state.user.userName);
+          console.log(this.state.name);
+          return;
+      }else{
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+
+            if(result){
+                let {navigate} = this.props.navigation;
+                Alert.alert(
+                    'Sucesso',
+                    'Seu usuário foi alterado!',
+                    [
+                        {text: 'OK', onPress: () => navigate('Home')},
+                    ],
+                    { cancelable: false }
+                    )
+            }else{
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível completar a alteração!',
+                    [
+                        {text: 'OK', onPress: () => navigate('Settings')},
+                    ],
+                    { cancelable: false }
+                    )
+            }
+          }
+          handleUpdate(this.state.name, this.state.user.userPassword, true, this.state.user.codEmail, responseFunction) 
+      }
+  }
+
+  handleChangePassword = () => {
+    if(md5.hex_md5(this.state.oldPassword) === this.state.user.userPassword){
+        if(this.state.password === this.state.confirmPassword){
+            const responseFunction = async (responseJSON) => {
+                const result = responseJSON;
+    
+                if(result){
+                    let {navigate} = this.props.navigation;
+                    Alert.alert(
+                        'Sucesso',
+                        'Seu usuário foi alterado!',
+                        [
+                            {text: 'OK', onPress: () => navigate('Home')},
+                        ],
+                        { cancelable: false }
+                        )
+                }else{
+                    Alert.alert(
+                        'Erro',
+                        'Não foi possível completar a alteração!',
+                        [
+                            {text: 'OK', onPress: () => navigate('Settings')},
+                        ],
+                        { cancelable: false }
+                        )
+                }
+            }
+            handleUpdate(this.state.user.userName, this.state.password, false, this.state.user.codEmail, responseFunction)
+        }else{
+            Alert.alert(
+                'Erro',
+                'Não foi possível completar a alteração! As senhas não conferem!',
+                [
+                    {text: 'OK'},
+                ],
+                { cancelable: false }
+                )
+        }
+    }else{
+        Alert.alert(
+            'Erro',
+            'Não foi possível completar a alteração! Senha antiga incorreta',
+            [
+                {text: 'OK'},
+            ],
+            { cancelable: false }
+            )
+    } 
+}
+
   render() {
     return (
       <Container>
@@ -54,11 +154,12 @@ export default class SettingsScreen extends React.Component {
                 <Text style={styles.title}>Configuração da Conta</Text>
                 <Image style={ styles.imgLogo } source={require("../assets/images/user.png")} />
                 <Text></Text>
-                <Input style={styles.inputStyle} placeholder={PLACEHOLD_NAME} onChangeText={(name) => this.setState({name})}/>
+                <Input style={styles.inputStyle} placeholder={PLACEHOLD_NAME} 
+                onChangeText={(name) => this.setState({name})} value={this.state.nameInput}/>
                 <Text></Text>
                 <Text></Text>
                 <View style={styles.buttonContainer}>
-                    <Button style={styles.add} >
+                    <Button style={styles.add} onPress={this.handleChangeName}>
                         <Text style={ styles.fontContainer }> Salvar nome </Text>
                     </Button>
                 </View>
@@ -97,7 +198,19 @@ export default class SettingsScreen extends React.Component {
                         </Right>
                     </View>    
                             
-                    <ModalPassword />
+                    <View style={styles.bodyContainer}>
+                      <Text></Text>
+                      <Text style={styles.textColor}>Senha antiga</Text>      
+                        <Input style={styles.inputStyle} 
+                            onChangeText={(oldPassword) => this.setState({oldPassword})} secureTextEntry={true}/>
+                      <Text style={styles.textColor}>Nova Senha</Text>
+                        <Input style={styles.inputStyle} 
+                            onChangeText={(password) => this.setState({password})} secureTextEntry={true}/>
+                      <Text style={styles.textColor}>Confirmar nova senha:</Text>
+                        <Input style={styles.inputStyle} 
+                            onChangeText={(confirmPassword) => this.setState({confirmPassword})} secureTextEntry={true}/>
+                      <Text></Text>
+                    </View>
                     
                     <View style={styles.footerContainer}>        
                         <Button style={styles.cancel} 
@@ -105,7 +218,7 @@ export default class SettingsScreen extends React.Component {
                             <Text style={ styles.fontContainer }> Cancelar </Text>
                         </Button>
                         <Right>
-                            <Button style={styles.add}>
+                            <Button style={styles.add}  onPress={this.handleChangePassword}>
                                 <Text style={ styles.fontContainer }> Salvar </Text>
                             </Button>
                         </Right>
@@ -128,7 +241,17 @@ export default class SettingsScreen extends React.Component {
                         </Right>
                     </View>    
                             
-                    <ModalDelete />
+                    <View style={styles.bodyContainer}>
+                      <Text></Text>
+                      <Text style={styles.textColor}>
+                        Você tem certeza que deseja excluir sua conta?
+                      </Text>
+                      <Text></Text>
+                      <Text style={styles.textColor}>Senha: </Text>      
+                        <Input style={styles.inputStyle} 
+                           onChangeText={(password) => this.setState({password})}/>
+                      <Text></Text>
+                    </View>
                     
                     <View style={styles.footerContainer}>        
                         <Button style={styles.cancel} 

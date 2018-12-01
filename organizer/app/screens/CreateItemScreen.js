@@ -70,6 +70,7 @@ export default class CreateItemScreen extends React.Component {
           nameItem: this.state.nomeInput,
           descriptionItem: this.state.descriptionInput,
           dateItem: this.state.chosenDate,
+          codEmail: this.state.user.codEmail,
         }
 
         const responseFunction = async (responseJSON) => {

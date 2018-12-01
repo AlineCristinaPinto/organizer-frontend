@@ -59,15 +59,6 @@ export default StyleSheet.create({
         margin:20,
     },
 
-    inputStyle:{
-        borderBottomColor: "black",
-        borderBottomWidth: 1,
-        fontFamily: "patrickH",
-        width: "90%",
-        color: "black",
-        height: 5,
-    },
-
     linkTextStyle:{
         color:"red",
         fontFamily: "patrickH",
@@ -129,5 +120,27 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
     },
+
+    bodyContainer:{
+      justifyContent: "center",
+      alignItems: "center",
+  },
+
+  textColor: {
+      color: "black",
+      marginLeft: 8,    
+      fontFamily: "patrickH",
+      fontSize: 15,
+  },
+
+  inputStyle:{
+      borderBottomColor: "black",
+      borderBottomWidth: 1,
+      fontFamily: "patrickH",
+      fontSize: 20,
+      width: '60%',
+      color: "black",
+      padding: 20,
+  },
 
   });
