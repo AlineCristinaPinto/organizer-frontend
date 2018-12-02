@@ -32,7 +32,7 @@ class Routes extends Component {
 
     componentDidMount() {
         AsyncStorage.getItem("user").then((token) => {
-          this.setState({ hasToken: token !== null, isLoaded: true })
+          this.setState({ hasToken: token !== null, isLoaded: true });
         });
     }
     

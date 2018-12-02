@@ -1,10 +1,12 @@
 import { ajaxRequest } from "./ajaxActions";
 
-export const handleListItem = (emailUser, callback) => {
-
-    let process = "?process=LoadItem";
-    data = {
+export const handleFilter = (emailUser, tags, types, callback) => {
+	let process = "?process=ItemFilter";
+    
+    data= {
         email: emailUser,
+		tag: tags,
+		type: types,
     }
     const responseArray = async (responseJSON) => {
         callback(responseJSON);

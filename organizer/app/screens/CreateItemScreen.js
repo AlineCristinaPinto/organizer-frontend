@@ -1,26 +1,32 @@
 import React from 'react';
-import { Alert, Picker, View} from 'react-native';
-import { Container, Textarea, Content, DatePicker,
+import { Alert, Picker, View, ListView, AsyncStorage} from 'react-native';
+import { Container, Textarea, Content, DatePicker, List, ListItem, 
     Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Modal from "react-native-modal";
 import ModalContent from "../components/Navigation/ModalContent";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { handleItemCreation } from '../actions/createItemAction';
+import { handleListTags } from '../actions/listTagsAction';
 
 import styles from '../assets/style/ItemScreensStyle';
 
 export default class CreateItemScreen extends React.Component {
 
     constructor(props) {
-        super(props);    
+        super(props);
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = { chosenDate: new Date(),
             tipoItem: 'SIM' ,
             nomeInput: '',
             description: '',
-            modalVisible: false };
+            modalVisible: false,
+            arrTags: [],
+            listViewData: [],
+        };
         this.setDate = this.setDate.bind(this);
     }
+
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
@@ -35,16 +41,36 @@ export default class CreateItemScreen extends React.Component {
 
     goHome = () => {
         let {navigate} = this.props.navigation;
-        console.log("aaa")
-
         navigate('Home');
     }
+
+    listTags = async () =>{
+        const responseFunction = async (responseJSON) => {
+          const result = responseJSON;
+          this.setState({arrTags: result})
+          this.setState({listViewData: this.state.arrTags})
+        }
+        result = handleListTags(this.state.user.codEmail, responseFunction);
+    }
+
+    componentDidMount(){
+        (async () => {
+          try {
+            const value = await AsyncStorage.getItem("user");
+            this.setState({ user: JSON.parse(value) });
+           } catch (error) {
+             console.error(error)
+           }
+        })().then(_ => this.listTags())
+    }
+    
     handleCreateItem = () => {
         data = {
           typeItem: this.state.tipoItem,
           nameItem: this.state.nomeInput,
           descriptionItem: this.state.descriptionInput,
           dateItem: this.state.chosenDate,
+          codEmail: this.state.user.codEmail,
         }
 
         const responseFunction = async (responseJSON) => {
@@ -136,11 +162,32 @@ export default class CreateItemScreen extends React.Component {
                                     </Right>
                                 </View>    
                                       
-                                <ModalContent />
+                                <View style={styles.bodyContainer}>         
+                                    <Text style={ styles.textContent }>Selecionadas:</Text>
+                                    <Card>
+                                        <CardItem header bordered>
+                                            <Text></Text>
+                                        </CardItem>
+                                    </Card>
+                                    <Item last></Item>
+                                    <Text style={ styles.textContent }>Lista de Tags:</Text>
+                                    <List
+                                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                                        renderRow={data =>
+                                            <ListItem>
+                                                <CheckBox style={ styles.checkBoxFeatures } checked={false} />
+                                                <Text style={ styles.textColor }>{data.tagName}</Text>
+                                            </ListItem> 
+                                        }
+                                    >
+                                    </List>
+
+                                </View>
                                 
                                 <View style={styles.footerContainer}>        
                                     <Button style={styles.cancel} 
-                                    onPress={ ()=> this.setModalVisible(false)}>
+                                    //onPress={ ()=> this.setModalVisible(false)}
+                                    >
                                         <Text style={ styles.fontContainer }> Cancelar </Text>
                                     </Button>
                                     <Right>
