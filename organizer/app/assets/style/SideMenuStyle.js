@@ -1,27 +1,87 @@
 import { StyleSheet } from 'react-native';
+import {Dimensions} from 'react-native';
+
+var screen = Dimensions.get('window');
 
 export default StyleSheet.create({
-    navItemStyle: {
-      padding: 10,
-      color: '#FFF4F8',
-      fontFamily: 'patrickH',
-      fontSize: 17
+
+  safeAreaStyle: {
+    flex: 1, 
+    backgroundColor: '#0C1125'
+  },
+
+  imageViewMenuStyle: {
+    marginTop: 40, 
+    marginBottom: 20, 
+    height:160, 
+    backgroundColor: '#0C1125', 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+
+  imageMenuStyle: {
+    height: 120, 
+    width: 120, 
+    borderRadius: 60 
+  },
+
+  userNameMenuStyle: {
+    color:'white', 
+    fontSize:20, 
+    fontFamily: 'patrickH', 
+    paddingTop:5
+  },
+
+  menuSectionStyle: {
+    borderTopWidth:1,
+    borderColor:'#293043',
+    flex:1,
+    flexDirection:"row",
+    justifyContent:'space-between',
+    paddingRight:20
+  },
+
+  collapseBodyStyle: {
+    borderTopWidth:1,
+    borderColor:'#293043',
+    flex:1,
+    backgroundColor: '#42598A'
+  },
+
+  menuItemSectionStyle: {
+    padding: 10,
+    color: '#FFF4F8',
+    fontFamily: 'patrickH',
+    fontSize: 17
+  },
+
+  createTagModalStyle: {
+    maxHeight: (screen.height - 145), 
+    position: 'absolute', 
+    bottom: 0, 
+    backgroundColor: '#0C1125'
+  },
+
+  iconItemTag: {
+    fontSize:20, 
+    color:'#78E7F3'
+  },
+
+
+
+
+
+
+
+  welcomeTitle: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontFamily: 'gloria',
+    color: '#FFF4F8'
     },
-    navSectionStyle: {
-      borderTopWidth:1,
-      borderColor:'#293043',
-      flex:1,
-      flexDirection:"row",
-      justifyContent:'space-between',
-      paddingRight:20
-    },
-    navSectionStyleP: {
-      borderTopWidth:1,
-      borderColor:'#293043',
-      flex:1,
-      backgroundColor: '#42598A' ,
-      paddingLeft: 20
-    },
+
+    
+
     navSectionLastStyle: {
       borderTopWidth:1,
       borderBottomWidth:1,
@@ -58,6 +118,19 @@ export default StyleSheet.create({
       fontSize: 18
     },
     alightCont: {
-      alignItems: 'center'
-    }
+      marginLeft: 20
+    },
+    add:{
+      backgroundColor: '#0fa400',
+      padding:20
+  },
+
+  cancel:{
+      backgroundColor: '#e25a00',
+      padding: 15
+  },
+  footer:{
+    flexDirection: 'row',
+    paddingTop: 20
+}
 });
