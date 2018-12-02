@@ -22,7 +22,9 @@ class SideMenu extends Component {
             collapsed:false, 
             nomeInput: '',
             user:null,
-            datas: []
+            datas: [],
+			tagOptions: [],
+			typeOptions: [],
         };
     } 
 
@@ -71,14 +73,46 @@ class SideMenu extends Component {
         this.listTags(),
         this.refs.modalTag.close()
     }
-      
+	
+	
+	sendToHome(){
+		this.props.navigation.navigate("Home", {"types": this.state.typeOptions, "tags": this.state.tagOptions});
+	}
+	
+	addTagOption = (value) => {
+		this.setState({
+			tagOptions: this.addToArray(value, this.state.tagOptions)
+		}, () => this.sendToHome());
+	}
+	
+	addTypeOption = (value) => {
+		this.setState({
+			typeOptions: this.addToArray(value, this.state.typeOptions)
+		}, () => this.sendToHome());
+	}
+     
+	addToArray = (value, arr) => {
+		var index = arr.indexOf(value);
+		
+		//if element is already in arr, removes it
+		//otherwise, adds at the end
+		if(index > -1){
+			arr.splice(index, 1);
+		}else{
+			arr.push(value);
+		}
+		
+		return arr;
+	};
+	
     displayTag(){
 
         var list = [];
 
         list = this.state.datas.map(textInfo =>
             <View style={styles.menuSectionStyle}  key={textInfo.seqTag}>
-                <Text style={[styles.menuItemSectionStyle, styles.alightCont]} key={textInfo.seqTag}> {textInfo.tagName} </Text>
+                <Text style={[styles.menuItemSectionStyle, styles.alightCont]} key={textInfo.seqTag}
+				/*onPress = {() => this.addTagOption(textInfo.tagName)}*/> {textInfo.tagName} </Text>
                 <View style={{flexDirection:"row", paddingTop:10}}>
                     <Icon name="edit" style={styles.iconItemTag}/>
                     <Icon name="file-text-o"style={{color: 'transparent'}}/>

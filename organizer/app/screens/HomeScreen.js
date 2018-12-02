@@ -90,7 +90,7 @@ export default class HomeScreen extends React.Component {
                 <Text style={ styles.textColor }> {data.nameItem}</Text>
               </ListItem>;
     } else {
-      return  <ListItem style={ styles.TAR } >
+      return  <ListItem style={ styles.TAR } onPress={() => this.setAlert(data) } >
                 <CheckBox style={ styles.checkBoxFeatures } checked = {data.seqItem == this.state.itemChanging} 
 				onPress={() => this.changeStatus(data)} />
                 <Text style={ styles.textColor }>{data.nameItem}</Text>
@@ -185,13 +185,13 @@ handleEditItem = (item) => {
 
   render() {
 	const { navigation } = this.props;
-	const tags = navigation.getParam("tags", []);
-	const types = navigation.getParam("types", []);
+	const tags = navigation.getParam("tags", null);
+	const types = navigation.getParam("types", null);
   
     return (
 		
       <Container style={styles.page}>
-		{types.length > 0 || tags.length > 0 ? this.filter(tags, types) : null}
+		{types !== null || tags !== null ? this.filter(tags, types) : null}
         
         <CustumHeader onPress={() =>this.props.navigation.openDrawer()} changeTextSearch = {this.changeTextSearch} />
 
