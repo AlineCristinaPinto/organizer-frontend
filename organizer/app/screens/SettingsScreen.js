@@ -40,10 +40,11 @@ export default class SettingsScreen extends React.Component {
         const value = await AsyncStorage.getItem("user");
         console.log(value)
         this.setState({ user: JSON.parse(value) });
+        this.setState({nameInput: this.state.user.userName})
        } catch (error) {
          console.error(error)
        }
-    })()
+    })().then()
   };
 
   static navigationOptions = {
@@ -95,6 +96,7 @@ export default class SettingsScreen extends React.Component {
   }
 
   handleChangePassword = () => {
+    this.setModalVisible(false);
     if(md5.hex_md5(this.state.oldPassword) === this.state.user.userPassword){
         if(this.state.password === this.state.confirmPassword){
             const responseFunction = async (responseJSON) => {
@@ -144,6 +146,20 @@ export default class SettingsScreen extends React.Component {
     } 
 }
 
+handleDeleteUser = () =>{
+    this.setModalVisibleII(false);
+    if(md5.hex_md5(this.state.oldPassword) === this.state.user.userPassword){
+    }else{
+        Alert.alert(
+            'Erro',
+            'Não foi possível completar a alteração! Senha incorreta',
+            [
+                {text: 'OK'},
+            ],
+            { cancelable: false }
+            )
+    } 
+}
   render() {
     return (
       <Container>
