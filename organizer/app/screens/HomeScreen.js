@@ -180,7 +180,41 @@ handleEditItem = (item) => {
 		}
 		
 		result = handleFilter(this.state.user.codEmail, tags, types, responseFunction);
-	}
+  }
+  
+  listHomeScreen(){
+    if(this.state.listViewData != null){
+			return <List
+      refreshControl={
+        <RefreshControl
+           refreshing={this.state.refreshing}
+           onRefresh={this._onRefresh}
+        />
+      }
+      leftOpenValue={75}
+      rightOpenValue={-75}
+      dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+      
+      renderRow={data =>
+        <View>
+          {this.displayItem(data)}
+        </View> 
+      }
+
+      renderLeftHiddenRow={data =>
+        <Button full onPress={_ => this.handleEditItem(data)}>
+          <Icon active name="edit" />
+        </Button>}
+
+      renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+        <Button full danger onPress={_ => this.deleteRow(data, secId, rowId, rowMap)}>
+          <Icon active name="trash" />
+        </Button>}
+    />;
+		}else{
+			return <Text>Não há itens ainda!</Text>;
+		}
+  }
 
 
   render() {
@@ -199,33 +233,8 @@ handleEditItem = (item) => {
 
           <Text></Text>
 
-          <List
-            refreshControl={
-              <RefreshControl
-                 refreshing={this.state.refreshing}
-                 onRefresh={this._onRefresh}
-              />
-            }
-            leftOpenValue={75}
-            rightOpenValue={-75}
-            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-            
-            renderRow={data =>
-              <View>
-                {this.displayItem(data)}
-              </View> 
-            }
+          {this.listHomeScreen()}
 
-            renderLeftHiddenRow={data =>
-              <Button full onPress={_ => this.handleEditItem(data)}>
-                <Icon active name="edit" />
-              </Button>}
-
-            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-              <Button full danger onPress={_ => this.deleteRow(data, secId, rowId, rowMap)}>
-                <Icon active name="trash" />
-              </Button>}
-          />
           </Content>
         <CustomFab navigation={this.props.navigation}/>
 
