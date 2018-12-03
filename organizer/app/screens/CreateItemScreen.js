@@ -169,19 +169,6 @@ export default class CreateItemScreen extends React.Component {
                                             <Text></Text>
                                         </CardItem>
                                     </Card>
-                                    <Item last></Item>
-                                    <Text style={ styles.textContent }>Lista de Tags:</Text>
-                                    <List
-                                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-                                        renderRow={data =>
-                                            <ListItem>
-                                                <CheckBox style={ styles.checkBoxFeatures } checked={false} />
-                                                <Text style={ styles.textColor }>{data.tagName}</Text>
-                                            </ListItem> 
-                                        }
-                                    >
-                                    </List>
-
                                 </View>
                                 
                                 <View style={styles.footerContainer}>        

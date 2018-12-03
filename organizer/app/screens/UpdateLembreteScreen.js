@@ -6,6 +6,7 @@ import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Modal from "react-native-modal";
 import ModalContent from "../components/Navigation/ModalContent";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {handleItemUpdation} from '../actions/updateItemAction';
 
 import styles from '../assets/style/ItemScreensStyle';
 
@@ -16,6 +17,7 @@ export default class UpdateLembreteScreen extends React.Component {
         this.state = { chosenDate: new Date(),
             modalVisible: false,
             nomeInput : '',
+            idItem: null,
             data: {}, };
         this.setDate = this.setDate.bind(this);
     }
@@ -35,6 +37,7 @@ export default class UpdateLembreteScreen extends React.Component {
             console.log(value)
             this.setState({ data: JSON.parse(value) });
             this.setState({ nomeInput: this.state.data.nameItem });
+            this.setState({ idItem: this.state.data.seqItem });
             
            } catch (error) {
             console.error(error)
@@ -46,14 +49,13 @@ export default class UpdateLembreteScreen extends React.Component {
     
     goHome = () => {
         let {navigate} = this.props.navigation;
-        console.log("aaa")
-
         navigate('Home');
     }
 
     handleUpdateItem = () => {
         datas = {
           typeItem: 'LEM',
+          seqItem: this.state.data.idItem,
           nameItem: this.state.nomeInput,
           descriptionItem: this.state.descriptionInput,
           dateItem: this.state.chosenDate,
