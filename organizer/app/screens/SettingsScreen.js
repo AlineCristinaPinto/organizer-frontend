@@ -2,16 +2,14 @@ import React, {Component} from "react";
 import {View, StatusBar, Alert, Image, TouchableWithoutFeedback, TouchableOpacity, Keyboard,   
   AsyncStorage  } from "react-native";
   import { Container, Textarea, Content, DatePicker,
-    Text, Form, Item, Input, Right, Button, Card, CardItem } from 'native-base';
+    Text, Form, Item, Input, Right, Button, Card, CardItem, ActionSheet } from 'native-base';
 import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from "react-native-modal";
-
-import ModalPassword from '../components/Settings/ModalPassword';
-import ModalDelete from '../components/Settings/ModalDelete';
+import { Actions } from "react-native-router-flux";
 
 import styles from "../assets/style/SettingsScreenStyle.js";
-import { handleUpdate } from "../actions/settingsActions";
+import { handleUpdate,handleDelete } from "../actions/settingsActions";
 import md5 from "react-native-md5";
 
 //import { Actions } from "react-native-router-flux";
@@ -27,6 +25,7 @@ export default class SettingsScreen extends React.Component {
       oldPassword:"",
       password:"",
       confirmPassword:"",
+      deletePassword:"",
       nameInput: "",
       modalVisible: false,
       modalVisibleII: false,
@@ -96,7 +95,6 @@ export default class SettingsScreen extends React.Component {
   }
 
   handleChangePassword = () => {
-    this.setModalVisible(false);
     if(md5.hex_md5(this.state.oldPassword) === this.state.user.userPassword){
         if(this.state.password === this.state.confirmPassword){
             const responseFunction = async (responseJSON) => {
@@ -122,6 +120,7 @@ export default class SettingsScreen extends React.Component {
                         { cancelable: false }
                         )
                 }
+                this.setModalVisible(false);
             }
             handleUpdate(this.state.user.userName, this.state.password, false, this.state.user.codEmail, responseFunction)
         }else{
@@ -147,8 +146,30 @@ export default class SettingsScreen extends React.Component {
 }
 
 handleDeleteUser = () =>{
-    this.setModalVisibleII(false);
-    if(md5.hex_md5(this.state.oldPassword) === this.state.user.userPassword){
+    console.log(md5.hex_md5(this.state.deletePassword))
+    if(md5.hex_md5(this.state.deletePassword) === this.state.user.userPassword){
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+            if(result){
+                await AsyncStorage.removeItem("user");
+                Action.login();
+            }else{
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível completar a exclusão!',
+                    [
+                        {text: 'OK'},
+                    ],
+                    { cancelable: false }
+                    )
+            }
+            this.setModalVisibleII(false);
+        }
+
+        data = {
+            email:this.state.user.codEmail,
+        };
+        handleUpdate(data, responseFunction);
     }else{
         Alert.alert(
             'Erro',
@@ -265,7 +286,7 @@ handleDeleteUser = () =>{
                       <Text></Text>
                       <Text style={styles.textColor}>Senha: </Text>      
                         <Input style={styles.inputStyle} 
-                           onChangeText={(password) => this.setState({password})}/>
+                           onChangeText={(deletePassword) => this.setState({deletePassword})} secureTextEntry={true}/>
                       <Text></Text>
                     </View>
                     
@@ -275,7 +296,7 @@ handleDeleteUser = () =>{
                             <Text style={ styles.fontContainer }> Cancelar </Text>
                         </Button>
                         <Right>
-                            <Button style={styles.add}>
+                            <Button style={styles.add} onPress={this.handleDeleteUser}>
                                 <Text style={ styles.fontContainer }> Excluir </Text>
                             </Button>
                         </Right>
