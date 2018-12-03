@@ -123,14 +123,17 @@ export default StyleSheet.create({
     add:{
       backgroundColor: '#0fa400',
       padding:20
-  },
+    },
+    alightItemCenter: {
+      alignItems: 'center'
+    },
 
-  cancel:{
-      backgroundColor: '#e25a00',
-      padding: 15
-  },
-  footer:{
-    flexDirection: 'row',
-    paddingTop: 20
-}
+    cancel:{
+        backgroundColor: '#e25a00',
+        padding: 15
+    },
+    footer:{
+      flexDirection: 'row',
+      paddingTop: 20
+    }
 });
