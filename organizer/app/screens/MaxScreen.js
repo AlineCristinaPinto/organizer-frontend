@@ -168,7 +168,7 @@ export default class MaxScreen extends React.Component {
         <View key="0">
           <Container style={ styles.page }>
         
-            <CustumHeader/>
+          <CustomHeaderBack navigation={this.props.navigation} />
 
             <Content>
               <Text></Text>

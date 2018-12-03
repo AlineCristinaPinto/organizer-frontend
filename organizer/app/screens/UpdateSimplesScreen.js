@@ -6,6 +6,7 @@ import CustomHeaderBack from "../components/Navigation/CustomHeaderBack";
 import Modal from "react-native-modal";
 import ModalContent from "../components/Navigation/ModalContent";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {handleItemUpdation} from '../actions/updateItemAction';
 
 import styles from '../assets/style/ItemScreensStyle';
 
@@ -13,12 +14,76 @@ export default class UpdateSimplesScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { modalVisible: false };
+        this.state = {
+            modalVisible: false,
+            nomeInput : '',
+            idItem: null,
+            data: {}, };
+        this.setDate = this.setDate.bind(this);
     }
-    
+        
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }
+
+    componentWillMount(){
+        (async () => {
+          try {
+            const value = await AsyncStorage.getItem("item");
+            console.log(value)
+            this.setState({ data: JSON.parse(value) });
+            this.setState({ nomeInput: this.state.data.nameItem });
+            this.setState({ idItem: this.state.data.seqItem });
+            
+           } catch (error) {
+            console.error(error)
+        }
+        })().then(this.setDate(this.state.data.dateItem),
+        console.log(this.state.chosenDate))
+ 
+    }
+    
+    goHome = () => {
+        let {navigate} = this.props.navigation;
+        navigate('Home');
+    }
+
+    handleUpdateItem = () => {
+        datas = {
+          typeItem: 'SIM',
+          seqItem: this.state.data.idItem,
+          nameItem: this.state.nomeInput,
+          descriptionItem: this.state.descriptionInput,
+        }
+
+        const responseFunction = async (responseJSON) => {
+            const result = responseJSON;
+
+            if(result){
+                // Works on both iOS and Android
+                Alert.alert(
+                    'Sucesso',
+                    'Seu item foi editado!',
+                    [
+                        {text: 'OK', onPress:() => this.goHome()},
+                    ],
+                    { cancelable: false }
+                    )
+            }else{
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível completar a edição do item.',
+                    [
+                        {text: 'OK', onPress: console.log("ok")},
+                    ],
+                    { cancelable: false }
+                    )
+            }
+        }
+
+        result = handleItemUpdation(datas, responseFunction);
+
+    };
     
     render() {
         let {navigate} = this.props.navigation;
@@ -29,11 +94,14 @@ export default class UpdateSimplesScreen extends React.Component {
                     <Form>
                         <Text style={styles.welcomeTitleSimples}>Editar Simples</Text>
                         
-                        <Input style={ styles.fontContainer } placeholder="Nome" />
+                        <Input style={ styles.fontContainer } placeholder="Nome" 
+                        value={this.state.data.nameItem}
+                        onChangeText={(nomeInput) => this.setState({nomeInput})}/>
                         <Item last></Item>
 
                         <Text></Text>
-                        <Textarea style={ styles.fontContainer } placeholder="Descrição" rowSpan={5} cowSpan={5} bordered />
+                        <Textarea style={ styles.fontContainer } placeholder="Descrição" 
+                        value={this.state.data.descriptionItem} onChangeText={(text) => this.value = text} rowSpan={5} cowSpan={5} bordered />
                        
                         <Button style={ styles.tags }
                         full onPress={() =>  this.setModalVisible(true) }>
