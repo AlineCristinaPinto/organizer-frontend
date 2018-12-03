@@ -9,6 +9,7 @@ import {Collapse, CollapseHeader, CollapseBody} from "accordion-collapse-react-n
 import { Form, Input, Item , Button, Right} from 'native-base';
 import { handleListTag } from '../actions/listTagAction';
 import { handleTagCreation } from '../actions/createTagAction';
+import { CheckBox } from 'react-native-elements'
 
 class SideMenu extends Component {
     
@@ -111,10 +112,20 @@ class SideMenu extends Component {
 
         list = this.state.datas.map(textInfo =>
             <View style={styles.menuSectionStyle}  key={textInfo.seqTag}>
-                <Text style={[styles.menuItemSectionStyle, styles.alightCont]} key={textInfo.seqTag}
-				/*onPress = {() => this.addTagOption(textInfo.tagName)}*/> {textInfo.tagName} </Text>
-                <View style={{flexDirection:"row", paddingTop:10}}>
-                    <Icon name="edit" style={styles.iconItemTag}/>
+                <CheckBox
+                    title={textInfo.tagName}
+                    checkedIcon='dot-circle-o'
+                    uncheckedIcon='circle-o'
+                    textStyle={{color: '#FFF4F8'}}
+                    checkedColor= '#78E7F3'
+                    fontFamily='patrickH'
+                    containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent', marginLeft: 20}}
+                    checked = {this.state.tagOptions.includes(textInfo.tagName)}
+                    onPress = {() => this.addTagOption(textInfo.tagName)}
+                    key={textInfo.seqTag}
+                />
+                <View style={{flexDirection:"row", paddingTop:20}}>
+                    <Icon name="edit" style={styles.iconItemTag} onPress={() => this.refs.modalTagEdit.open()}/>
                     <Icon name="file-text-o"style={{color: 'transparent'}}/>
                     <Icon name="file-text-o"style={{color: 'transparent'}}/>
                     <Icon name="trash" style={styles.iconItemTag}/>
@@ -191,7 +202,48 @@ class SideMenu extends Component {
                                 <Icon name="angle-down" style={styles.iconsAngle}/>
                             </CollapseHeader>
                             <CollapseBody style={styles.collapseBodyStyle}>
-    
+                                <View style={[styles.alightItemCenter, styles.menuSectionStyle]}>
+                                    <CheckBox
+                                        center
+                                        title='Lembrete'
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                        textStyle={{color: '#FFF4F8'}}
+                                        fontFamily='patrickH'
+                                        checkedColor= '#78E7F3'
+                                        containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent', marginLeft: 20}}
+                                        checked={this.state.typeOptions.includes("LEM")}
+                                        onPress = {() => this.addTypeOption("LEM")}
+                                    />
+                                </View>
+                                <View style={[styles.alightItemCenter, styles.menuSectionStyle]}>
+                                    <CheckBox
+                                        center
+                                        title='Tarefa'
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                        textStyle={{color: '#FFF4F8'}}
+                                        fontFamily='patrickH'
+                                        checkedColor= '#78E7F3'
+                                        containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent', marginLeft: 20}}
+                                        checked={this.state.typeOptions.includes("TAR")}
+                                        onPress = {() => this.addTypeOption("TAR")}
+                                    />
+                                </View>
+                                <View style={[styles.alightItemCenter, styles.menuSectionStyle]}>
+                                    <CheckBox
+                                        center
+                                        title='Simples'
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                        textStyle={{color: '#FFF4F8'}}
+                                        fontFamily='patrickH'
+                                        checkedColor= '#78E7F3'
+                                        containerStyle={{backgroundColor: 'transparent', borderColor: 'transparent', marginLeft: 20}}
+                                        checked={this.state.typeOptions.includes("SIM")}
+                                        onPress = {() => this.addTypeOption("SIM")}
+                                    />
+                                </View>
                             </CollapseBody>
                     </Collapse>
                     <Collapse 
@@ -266,12 +318,12 @@ class SideMenu extends Component {
                         </View>
                     </ScrollView>
                 </Modal>
-                <Modal style={styles.createTagModalStyle} ref={"modalTag"}>
+                <Modal style={styles.createTagModalStyle} ref={"modalTagEdit"}>
                     <ScrollView style={{flex:1}}>
                         <View style={{ paddingLeft: 10, paddingRight:10}}>
                             <View style={{flex:1, flexDirection:"row"}}>
                                 <Icon name="angle-left" style={styles.iconsAngle}/>  
-                                <Text style={[styles.menuItemSectionStyle]} onPress={() => this.refs.modalTag.close()}>
+                                <Text style={[styles.menuItemSectionStyle]} onPress={() => this.refs.modalTagEdit.close()}>
                                     <Text style={[styles.menuItemSectionStyle]}> Voltar</Text>
                                 </Text>
                             </View>
@@ -284,7 +336,7 @@ class SideMenu extends Component {
 
                                     <View style={styles.footer}>        
                                         <Button style={styles.cancel} 
-                                        onPress={() => this.refs.modalTag.close()}>
+                                        onPress={() => this.refs.modalTagEdit.close()}>
                                             <Text style={ styles.menuItemSectionStyle }> Cancelar </Text>
                                         </Button>
                                         <Right>
